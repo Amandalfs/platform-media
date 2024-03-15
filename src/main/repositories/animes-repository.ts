@@ -9,6 +9,7 @@ import {
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'node:crypto'
+import { UpdataTimeAnimeSecondsRequest } from './../../shared/types/ipc-types'
 
 interface CreateAnimesInput {
   name: string
@@ -142,6 +143,21 @@ class AnimesRepository {
       isNext: isNext,
       isPrev: isPrev
     }
+  }
+
+  async updataTimeAnimeSeconds({
+    episodieId,
+    id,
+    season,
+    temp
+  }: UpdataTimeAnimeSecondsRequest): Promise<void> {
+    const anime = store.get<string, AnimeStore>(`animes.${id}`)
+    const seasons = Object.values(anime.seasons)
+    const [seasonFilted] = seasons.filter((seasonObject) => seasonObject.number === season)
+    store.set(`animes.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`, {
+      ...seasonFilted.episodies[episodieId],
+      isTemp: temp
+    })
   }
 }
 

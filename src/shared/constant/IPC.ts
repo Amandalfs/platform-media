@@ -9,7 +9,8 @@ export const IPC = {
     getByPage: 'animes-get-page',
     getById: 'anime-get-by-id',
     getByNumberEpisodie: 'anime-get-number-episodie',
-    getEpisodie: 'anime-get-episodie'
+    getEpisodie: 'anime-get-episodie',
+    updateTime: 'anime-update-time-episodie'
   },
   movies: {
     getByPage: 'movies-get-page',

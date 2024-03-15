@@ -11,7 +11,8 @@ import {
   GetSerieByIdResponse,
   GetSeriesRequest,
   GetSeriesResponse,
-  HandleCreateVideosRequest
+  HandleCreateVideosRequest,
+  UpdataTimeAnimeSecondsRequest
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
 import fs from 'fs'
@@ -120,5 +121,12 @@ ipcMain.handle(
   ): Promise<GetAnimeEpisodieByNumberResponse> => {
     const anime = animesRepository.getByEpisodie({ id, number, season })
     return anime
+  }
+)
+
+ipcMain.handle(
+  IPC.animes.updateTime,
+  async (_, { id, season, episodieId, temp }: UpdataTimeAnimeSecondsRequest): Promise<void> => {
+    await animesRepository.updataTimeAnimeSeconds({ id, season, episodieId, temp })
   }
 )

@@ -14,7 +14,8 @@ import {
   GetMoviesRequest,
   GetMoviesResponse,
   GetAnimeEpisodieByNumberResponse,
-  GetAnimeEpisodieByNumberRequest
+  GetAnimeEpisodieByNumberRequest,
+  UpdataTimeAnimeSecondsRequest
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -41,6 +42,9 @@ export const api = {
     req: GetAnimeEpisodieByNumberRequest
   ): Promise<GetAnimeEpisodieByNumberResponse> {
     return ipcRenderer.invoke(IPC.animes.getEpisodie, req)
+  },
+  animeUpdateTime(req: UpdataTimeAnimeSecondsRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.animes.updateTime, req)
   }
 }
 
