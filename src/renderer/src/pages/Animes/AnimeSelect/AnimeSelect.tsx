@@ -14,6 +14,26 @@ type EpisodeProps = {
   season: number
 }
 
+function formatTime(seconds: number): string {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  let formattedTime = ''
+
+  if (hours > 0) {
+    formattedTime += `${hours} hora${hours !== 1 ? 's' : ''} `
+  }
+
+  if (minutes > 0 || hours > 0) {
+    formattedTime += `${minutes} minuto${minutes !== 1 ? 's' : ''} `
+  }
+
+  formattedTime += `${remainingSeconds} segundo${remainingSeconds !== 1 ? 's' : ''}`
+
+  return formattedTime
+}
+
 const Episode = ({
   number,
   watched,
@@ -24,14 +44,18 @@ const Episode = ({
   <Link to={`/animes/${animeId}/seasons/${season}/episodies/${number}`}>
     <SeparatorHorizontal />
     <div className="flex justify-start gap-4 h-8">
-      <img src={image} alt="" className="h-auto w-auto" />
-      <h2 className="ml-2">{number} Episódio</h2>
+      <div className="flex w-32">
+        <img src={image} alt="" className="h-auto w-auto" />
+        <h2 className="ml-2">{number} Episódio</h2>
+      </div>
       <SeparatorVertical />
-      {watchedMinutes ? (
-        <div className="ml-2">{watchedMinutes}</div>
-      ) : (
-        <div className="ml-2">00:00</div>
-      )}
+      <div className="flex w-52">
+        {watchedMinutes ? (
+          <div className="ml-2">{formatTime(Number(watchedMinutes))}</div>
+        ) : (
+          <div className="ml-2">00:00</div>
+        )}
+      </div>
       <SeparatorVertical />
       <button
         className={`ml-2 w-6 h-6 flex items-center justify-center ${

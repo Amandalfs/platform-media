@@ -1,7 +1,7 @@
 import { Button } from '@radix-ui/themes'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import ReactPlayer from 'react-player'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { GetAnimeEpisodieByNumberResponse } from '~/src/shared/types/ipc-types'
 import LoadingSpinner from './../../../../components/Loading/Loading'
 import { useRef, useState } from 'react'
@@ -40,6 +40,7 @@ export function AnimeEpisodie(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isPrimary, setIsPrimary] = useState(true)
   const playerRef = useRef(null)
+  const navigate = useNavigate()
 
   const { id, season, episodie } = useParams()
 
@@ -95,9 +96,18 @@ export function AnimeEpisodie(): JSX.Element {
             onPause={() => {
               updateTime(Math.round(playerRef.current.getCurrentTime()))
             }}
+            onEnded={() => {
+              if (
+                Math.round(playerRef.current.getDuration()) ===
+                Math.round(playerRef.current.getCurrentTime())
+              ) {
+                updateTime(Math.round(playerRef.current.getCurrentTime()))
+                navigate(data.isNext)
+              }
+            }}
           />
         )}
-        <NextEp isVisible={true} link={data?.isNext ?? ''} />
+        <NextEp isVisible={false} link={data?.isNext ?? ''} />
       </div>
       <SeparatorHorizontal />
       <ModalTime
