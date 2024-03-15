@@ -28,13 +28,7 @@ interface AnimeStore extends Omit<Anime, 'seasons'> {
 class AnimesRepository {
   async getPageOrganizator(size: number, page: number): Promise<GetAnimesResponse> {
     const objects = store.get<string, AnimeStore>('animes')
-    const animes = Object.values(objects).map((anime) => ({
-      ...anime,
-      seasons: Object.values(anime.seasons).map((season) => ({
-        ...season,
-        episodies: Object.values(season.episodies)
-      }))
-    }))
+    const animes = Object.values(objects)
 
     const startIndex = Math.max(0, (page - 1) * size)
     const endIndex = Math.min(animes.length, page * size)
@@ -47,7 +41,7 @@ class AnimesRepository {
   }
 
   async getById(id: string): Promise<GetAnimeByIdResponse> {
-    const anime = store.get<string, Anime>(`animes.${id}`)
+    const anime = store.get<string, AnimeStore>(`animes.${id}`)
     return {
       data: anime
     }
@@ -66,12 +60,11 @@ class AnimesRepository {
         id: seasonId,
         episodies: {}
       }
-
       const episodiesList: Array<Episodie> = []
       for (let ep = 1; ep <= episodies; ep++) {
         const episodieId = randomUUID()
         const episodie: Episodie = {
-          number: i,
+          number: ep,
           id: episodieId,
           created_at: new Date(),
           isTemp: 0,
@@ -82,7 +75,7 @@ class AnimesRepository {
 
         episodiesList.push(episodie)
         animesByKey[seasonId].episodies[episodieId] = {
-          number: i,
+          number: ep,
           id: episodieId,
           created_at: new Date(),
           isTemp: 0,
@@ -110,7 +103,7 @@ class AnimesRepository {
       id: animeId,
       name,
       banner,
-      seasons: {}
+      seasons: animesByKey
     }
     store.set(`animes.${animeId}`, ObjetctAnimeSave)
     return anime
@@ -121,8 +114,12 @@ class AnimesRepository {
     number,
     season
   }: GetAnimeEpisodieByNumberRequest): Promise<GetAnimeEpisodieByNumberResponse> {
-    const { seasons } = store.get<string, Anime>(`animes.${id}`)
-    const [{ episodies }] = seasons.filter((seasonObject) => seasonObject.number === Number(season))
+    const anime = store.get<string, AnimeStore>(`animes.${id}`)
+    const seasons = Object.values(anime.seasons)
+    const [{ episodies: episodiesObject }] = seasons.filter(
+      (seasonObject) => seasonObject.number === Number(season)
+    )
+    const episodies = Object.values(episodiesObject)
     const [episodie] = episodies.filter((episodie) => episodie.number === Number(number))
 
     let isPrev = ''

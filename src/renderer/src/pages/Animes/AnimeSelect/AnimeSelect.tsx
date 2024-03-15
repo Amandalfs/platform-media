@@ -11,7 +11,6 @@ type EpisodeProps = {
   watched: boolean
   watchedMinutes?: string
   animeId: string
-  id: string
   season: number
 }
 
@@ -20,7 +19,6 @@ const Episode = ({
   watched,
   watchedMinutes,
   animeId,
-  id,
   season
 }: EpisodeProps): JSX.Element => (
   <Link to={`/animes/${animeId}/seasons/${season}/episodies/${number}`}>
@@ -97,18 +95,17 @@ export function AnimeSelect(): JSX.Element {
     <div className="p-4">
       <div className="flex flex-col items-center justify-center mb-4">
         <h1 className="text-3xl font-bold mb-2">
-          {data && `${data.data.name} - ${data.data.seasons.length} temporada`}
+          {data && `${data.data.name} - ${Object.values(data.data.seasons).length} temporada`}
         </h1>
         <img src={data?.data.banner} alt="" className="w-auto h-52 mb-4" />
       </div>
       <div className="w-[80%] mx-auto">
         {data &&
-          data.data.seasons.map((season) => (
+          Object.values(data.data.seasons).map((season) => (
             <Season key={season.id} number={season.number}>
-              {season.episodies.map((episodie) => (
+              {Object.values(season.episodies).map((episodie) => (
                 <Episode
                   animeId={id ?? ''}
-                  id={episodie.id}
                   number={episodie.number}
                   watched={episodie.isWatched}
                   watchedMinutes={String(episodie.isTemp)}

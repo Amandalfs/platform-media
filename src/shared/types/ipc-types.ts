@@ -45,7 +45,7 @@ export interface GetSerieEpisodieByNumberRequest {
 // Response
 
 export interface GetAnimesResponse {
-  data: Array<Anime>
+  data: Array<AnimeStore>
   isNext: boolean
   isPrev: boolean
 }
@@ -63,7 +63,7 @@ export interface GetMoviesResponse {
 }
 
 export interface GetAnimeByIdResponse {
-  data: Anime
+  data: AnimeStore
 }
 
 export interface GetSerieByIdResponse {
@@ -122,4 +122,12 @@ export interface Movie {
   isTemp: number
   created_at: Date
   reload_at: Date
+}
+
+interface AnimeSeasonsStore extends Omit<Season, 'episodies'> {
+  episodies: Record<string, Episodie>
+}
+
+interface AnimeStore extends Omit<Anime, 'seasons'> {
+  seasons: Record<string, AnimeSeasonsStore>
 }
