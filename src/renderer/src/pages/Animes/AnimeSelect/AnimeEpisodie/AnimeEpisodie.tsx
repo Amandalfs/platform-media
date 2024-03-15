@@ -35,6 +35,7 @@ export function AnimeEpisodie(): JSX.Element {
       }
     }
   })
+  console.log(data)
 
   // const checkTimePrev = (currentTime: number, duration: number): void => {
   //   if (duration - currentTime < 60 && data?.isNext) {
