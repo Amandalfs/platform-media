@@ -39,6 +39,7 @@ const NextEp = ({ isVisible, link }: NextEpProps): JSX.Element => {
 export function AnimeEpisodie(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isPrimary, setIsPrimary] = useState(true)
+  const [isFinished, setIsFinished] = useState(false)
   const playerRef = useRef(null)
   const navigate = useNavigate()
 
@@ -86,11 +87,21 @@ export function AnimeEpisodie(): JSX.Element {
             url={data?.data.url}
             controls
             width={'100%'}
+            height={'450px'}
             ref={playerRef}
             playing={data.data.url ? true : false}
             onProgress={(state: OnProgressProps) => {
               if (Math.round(state.playedSeconds) % 10 === 0) {
                 updateTime(Math.round(state.playedSeconds))
+              }
+
+              if (
+                Math.round(playerRef.current.getCurrentTime()) >=
+                Math.round(playerRef.current.getDuration()) - 120
+              ) {
+                setIsFinished(true)
+              } else {
+                setIsFinished(false)
               }
             }}
             onPause={() => {
@@ -107,7 +118,7 @@ export function AnimeEpisodie(): JSX.Element {
             }}
           />
         )}
-        <NextEp isVisible={false} link={data?.isNext ?? ''} />
+        <NextEp isVisible={isFinished} link={data?.isNext ?? ''} />
       </div>
       <SeparatorHorizontal />
       <ModalTime
