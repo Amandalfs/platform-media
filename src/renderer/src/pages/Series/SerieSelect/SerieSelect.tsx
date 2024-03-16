@@ -14,7 +14,13 @@ type EpisodeProps = {
   id: string
 }
 
-const Episode = ({ number, watched, watchedMinutes, serieId, id }: EpisodeProps): JSX.Element => (
+const Episode = ({
+  number,
+  watched,
+  watchedMinutes,
+  serieId,
+  id,
+}: EpisodeProps): JSX.Element => (
   <Link to={`/series/${serieId}/episodies/${id}`}>
     <SeparatorHorizontal />
     <div className="flex justify-start gap-4 h-8">
@@ -67,7 +73,10 @@ const Season = ({ number, children }: SeasonProps): JSX.Element => {
           <h2 className="text-xl font-bold">Temporada {number}</h2>
         </div>
       </div>
-      <Collapsible.Root open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+      <Collapsible.Root
+        open={isOpen}
+        onOpenChange={() => setIsOpen((prev) => !prev)}
+      >
         <Collapsible.Content>{children}</Collapsible.Content>
       </Collapsible.Root>
     </div>
@@ -82,7 +91,7 @@ export function SerieSelect(): JSX.Element {
     queryFn: async (): Promise<GetSerieByIdResponse> => {
       const response = await window.api.getSerieById({ id: id ?? '' })
       return response
-    }
+    },
   })
 
   return (

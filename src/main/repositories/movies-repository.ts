@@ -8,7 +8,10 @@ interface CreateMovieInput {
 }
 
 class MoviesRepository {
-  async getPageOrganizator(size: number, page: number): Promise<GetMoviesResponse> {
+  async getPageOrganizator(
+    size: number,
+    page: number,
+  ): Promise<GetMoviesResponse> {
     const objects = store.get<string, Movie>('movies')
     const movies = Object.values(objects) as Array<Movie>
 
@@ -18,7 +21,7 @@ class MoviesRepository {
     return {
       data: movies.slice(startIndex, endIndex),
       isNext: endIndex < movies.length,
-      isPrev: startIndex > 0
+      isPrev: startIndex > 0,
     }
   }
 
@@ -33,7 +36,7 @@ class MoviesRepository {
       isTemp: 0,
       isWatched: false,
       reload_at: new Date(),
-      url: ''
+      url: '',
     }
     store.set(`movies.${movieId}`, movie)
     return movie

@@ -5,7 +5,7 @@ import {
   GetAnimeEpisodieByNumberRequest,
   GetAnimeEpisodieByNumberResponse,
   GetAnimesResponse,
-  Season
+  Season,
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'node:crypto'
@@ -27,7 +27,10 @@ interface AnimeStore extends Omit<Anime, 'seasons'> {
 }
 
 class AnimesRepository {
-  async getPageOrganizator(size: number, page: number): Promise<GetAnimesResponse> {
+  async getPageOrganizator(
+    size: number,
+    page: number,
+  ): Promise<GetAnimesResponse> {
     const objects = store.get<string, AnimeStore>('animes')
     const animes = Object.values(objects)
 
@@ -37,18 +40,23 @@ class AnimesRepository {
     return {
       data: animes.slice(startIndex, endIndex),
       isNext: endIndex < animes.length,
-      isPrev: startIndex > 0
+      isPrev: startIndex > 0,
     }
   }
 
   async getById(id: string): Promise<GetAnimeByIdResponse> {
     const anime = store.get<string, AnimeStore>(`animes.${id}`)
     return {
-      data: anime
+      data: anime,
     }
   }
 
-  async create({ banner, episodies, name, seasons }: CreateAnimesInput): Promise<Anime> {
+  async create({
+    banner,
+    episodies,
+    name,
+    seasons,
+  }: CreateAnimesInput): Promise<Anime> {
     const animeId = randomUUID()
 
     const animeSeasons: Array<Season> = []
@@ -59,7 +67,7 @@ class AnimesRepository {
       animesByKey[seasonId] = {
         number: i,
         id: seasonId,
-        episodies: {}
+        episodies: {},
       }
       const episodiesList: Array<Episodie> = []
       for (let ep = 1; ep <= episodies; ep++) {
@@ -71,7 +79,7 @@ class AnimesRepository {
           isTemp: 0,
           isWatched: false,
           reload_at: new Date(),
-          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`
+          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`,
         }
 
         episodiesList.push(episodie)
@@ -82,13 +90,13 @@ class AnimesRepository {
           isTemp: 0,
           isWatched: false,
           reload_at: new Date(),
-          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`
+          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`,
         }
       }
       const season: Season = {
         number: i,
         id: seasonId,
-        episodies: episodiesList
+        episodies: episodiesList,
       }
 
       animeSeasons.push(season)
@@ -98,13 +106,13 @@ class AnimesRepository {
       id: animeId,
       name,
       banner,
-      seasons: animeSeasons
+      seasons: animeSeasons,
     }
     const ObjetctAnimeSave = {
       id: animeId,
       name,
       banner,
-      seasons: animesByKey
+      seasons: animesByKey,
     }
     store.set(`animes.${animeId}`, ObjetctAnimeSave)
     return anime
@@ -113,15 +121,17 @@ class AnimesRepository {
   async getByEpisodie({
     id,
     number,
-    season
+    season,
   }: GetAnimeEpisodieByNumberRequest): Promise<GetAnimeEpisodieByNumberResponse> {
     const anime = store.get<string, AnimeStore>(`animes.${id}`)
     const seasons = Object.values(anime.seasons)
     const [{ episodies: episodiesObject }] = seasons.filter(
-      (seasonObject) => seasonObject.number === Number(season)
+      (seasonObject) => seasonObject.number === Number(season),
     )
     const episodies = Object.values(episodiesObject)
-    const [episodie] = episodies.filter((episodie) => episodie.number === Number(number))
+    const [episodie] = episodies.filter(
+      (episodie) => episodie.number === Number(number),
+    )
 
     let isPrev = ''
     let isNext = ''
@@ -132,7 +142,10 @@ class AnimesRepository {
       isPrev = `/animes/${id}/seasons/${Number(season)}/episodies/${Number(number) - 1}`
     }
 
-    if (Number(season) < season.length && episodie.number === episodies.length) {
+    if (
+      Number(season) < season.length &&
+      episodie.number === episodies.length
+    ) {
       isNext = `/animes/${id}/seasons/${season}/episodies/${number}`
     } else if (Number(number) < episodies.length) {
       isNext = `/animes/${id}/seasons/${Number(season)}/episodies/${Number(number) + 1}`
@@ -140,8 +153,8 @@ class AnimesRepository {
 
     return {
       data: episodie,
-      isNext: isNext,
-      isPrev: isPrev
+      isNext,
+      isPrev,
     }
   }
 
@@ -149,15 +162,20 @@ class AnimesRepository {
     episodieId,
     id,
     season,
-    temp
+    temp,
   }: UpdataTimeAnimeSecondsRequest): Promise<void> {
     const anime = store.get<string, AnimeStore>(`animes.${id}`)
     const seasons = Object.values(anime.seasons)
-    const [seasonFilted] = seasons.filter((seasonObject) => seasonObject.number === season)
-    store.set(`animes.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`, {
-      ...seasonFilted.episodies[episodieId],
-      isTemp: temp
-    })
+    const [seasonFilted] = seasons.filter(
+      (seasonObject) => seasonObject.number === season,
+    )
+    store.set(
+      `animes.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`,
+      {
+        ...seasonFilted.episodies[episodieId],
+        isTemp: temp,
+      },
+    )
   }
 }
 

@@ -39,7 +39,7 @@ const Episode = ({
   watched,
   watchedMinutes,
   animeId,
-  season
+  season,
 }: EpisodeProps): JSX.Element => (
   <Link to={`/animes/${animeId}/seasons/${season}/episodies/${number}`}>
     <SeparatorHorizontal />
@@ -97,7 +97,10 @@ const Season = ({ number, children }: SeasonProps): JSX.Element => {
           <h2 className="text-xl font-bold">Temporada {number}</h2>
         </div>
       </div>
-      <Collapsible.Root open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+      <Collapsible.Root
+        open={isOpen}
+        onOpenChange={() => setIsOpen((prev) => !prev)}
+      >
         <Collapsible.Content>{children}</Collapsible.Content>
       </Collapsible.Root>
     </div>
@@ -112,14 +115,15 @@ export function AnimeSelect(): JSX.Element {
     queryFn: async (): Promise<GetAnimeByIdResponse> => {
       const response = await window.api.getAnimeById({ id: id ?? '' })
       return response
-    }
+    },
   })
 
   return (
     <div className="p-4">
       <div className="flex flex-col items-center justify-center mb-4">
         <h1 className="text-3xl font-bold mb-2">
-          {data && `${data.data.name} - ${Object.values(data.data.seasons).length} temporada`}
+          {data &&
+            `${data.data.name} - ${Object.values(data.data.seasons).length} temporada`}
         </h1>
         <img src={data?.data.banner} alt="" className="w-auto h-52 mb-4" />
       </div>

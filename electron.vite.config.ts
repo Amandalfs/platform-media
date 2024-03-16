@@ -5,26 +5,26 @@ import tailwind from 'tailwindcss'
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
   },
   preload: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
   },
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src')
-      }
+        '@renderer': resolve('src/renderer/src'),
+      },
     },
     css: {
       postcss: {
         plugins: [
           tailwind({
-            config: './src/renderer/tailwind.config.js'
-          })
-        ]
-      }
+            config: './src/renderer/tailwind.config.js',
+          }),
+        ],
+      },
     },
-    plugins: [react()]
-  }
+    plugins: [react()],
+  },
 })

@@ -15,7 +15,7 @@ import {
   GetMoviesResponse,
   GetAnimeEpisodieByNumberResponse,
   GetAnimeEpisodieByNumberRequest,
-  UpdataTimeAnimeSecondsRequest
+  UpdataTimeAnimeSecondsRequest,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -39,13 +39,13 @@ export const api = {
     return ipcRenderer.invoke(IPC.series.getById, req)
   },
   getAnimeEpisodie(
-    req: GetAnimeEpisodieByNumberRequest
+    req: GetAnimeEpisodieByNumberRequest,
   ): Promise<GetAnimeEpisodieByNumberResponse> {
     return ipcRenderer.invoke(IPC.animes.getEpisodie, req)
   },
   animeUpdateTime(req: UpdataTimeAnimeSecondsRequest): Promise<void> {
     return ipcRenderer.invoke(IPC.animes.updateTime, req)
-  }
+  },
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

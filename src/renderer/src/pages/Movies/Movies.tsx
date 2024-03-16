@@ -12,7 +12,7 @@ export function Movies(): JSX.Element {
     queryFn: async (): Promise<GetMoviesResponse> => {
       const response = await window.api.getMoviesByPage({ page, sizeList: 5 })
       return response
-    }
+    },
   })
 
   return (

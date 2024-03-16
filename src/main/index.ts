@@ -5,13 +5,12 @@ import icon from '../../resources/icon.png?asset'
 import express from 'express'
 import debug from 'electron-debug'
 import { createFileRoute, createURLRoute } from 'electron-router-dom'
+import fs from 'fs'
+import './ipcMain'
+import appStatic from './staticServer'
 // import { createTray } from './trayRemotePlay'
 // Ativa o modo de depuração
 debug()
-import fs from 'fs'
-import './ipcMain'
-import './staticServer'
-import appStatic from './staticServer'
 
 function createWindow(): void {
   // Create the browser window.
@@ -23,8 +22,8 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -38,12 +37,18 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  const devServerURL = createURLRoute(process.env['ELECTRON_RENDERER_URL']!, 'main')
-  const fileRoute = createFileRoute(join(__dirname, '../renderer/index.html'), 'main')
+  const devServerURL = createURLRoute(
+    process.env.ELECTRON_RENDERER_URL!,
+    'main',
+  )
+  const fileRoute = createFileRoute(
+    join(__dirname, '../renderer/index.html'),
+    'main',
+  )
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+  if (is.dev && process.env.ELECTRON_RENDERER_URL) {
     mainWindow.loadURL(devServerURL)
   } else {
     mainWindow.loadFile(...fileRoute)
@@ -115,7 +120,7 @@ const createCategories = (): CategoriePath => {
   const paths = [
     path.join(videosPath, 'movies'),
     path.join(videosPath, 'series'),
-    path.join(videosPath, 'animes')
+    path.join(videosPath, 'animes'),
   ]
   paths.forEach((path) => {
     if (!fs.existsSync(path)) {
@@ -125,7 +130,7 @@ const createCategories = (): CategoriePath => {
   return {
     movies: path.join(videosPath, 'movies'),
     series: path.join(videosPath, 'series'),
-    animes: path.join(videosPath, 'animes')
+    animes: path.join(videosPath, 'animes'),
   }
 }
 export const pathCategories = createCategories()

@@ -8,7 +8,7 @@ export function Home(): JSX.Element {
       justify={'between'}
       align={'center'}
       style={{
-        height: '100vh'
+        height: '100vh',
       }}
       direction={'column'}
       className="gap-20"
@@ -22,7 +22,11 @@ export function Home(): JSX.Element {
             placeholder="Pesquise sua série"
           />
           <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4 text-gray-400"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -40,7 +44,12 @@ export function Home(): JSX.Element {
           <Button>Prev</Button>
           <div className="flex gap-4">
             {[...Array(5)].map((_, index) => (
-              <CardMedium key={index} image={image} status="Continuar" title="Teen Wolf" />
+              <CardMedium
+                key={index}
+                image={image}
+                status="Continuar"
+                title="Teen Wolf"
+              />
             ))}
           </div>
           <Button>Next</Button>
@@ -53,7 +62,12 @@ export function Home(): JSX.Element {
           <Button>Prev</Button>
           <div className="flex gap-4">
             {[...Array(5)].map((_, index) => (
-              <CardMedium key={index} image={image} status="Continuar" title="Teen Wolf" />
+              <CardMedium
+                key={index}
+                image={image}
+                status="Continuar"
+                title="Teen Wolf"
+              />
             ))}
           </div>
           <Button>Next</Button>
@@ -65,7 +79,12 @@ export function Home(): JSX.Element {
           <Button>Prev</Button>
           <div className="flex gap-4">
             {[...Array(5)].map((_, index) => (
-              <CardMedium key={index} image={image} status="Continuar" title="Teen Wolf" />
+              <CardMedium
+                key={index}
+                image={image}
+                status="Continuar"
+                title="Teen Wolf"
+              />
             ))}
           </div>
           <Button>Next</Button>

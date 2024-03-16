@@ -11,6 +11,6 @@ export const store = new Store<StoreType>({
   defaults: {
     series: {},
     animes: {},
-    movies: {}
-  }
+    movies: {},
+  },
 })

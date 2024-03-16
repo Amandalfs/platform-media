@@ -49,14 +49,18 @@ export function AnimeEpisodie(): JSX.Element {
     queryKey: ['anime-episodie', id, season, episodie],
     queryFn: async (): Promise<GetAnimeEpisodieByNumberResponse | void> => {
       if (id && season && episodie) {
-        const response = await window.api.getAnimeEpisodie({ id, season, number: episodie })
+        const response = await window.api.getAnimeEpisodie({
+          id,
+          season,
+          number: episodie,
+        })
         if (isPrimary) {
           if (response.data.isTemp !== 0) setIsOpen(true)
           setIsPrimary(false)
         }
         return response
       }
-    }
+    },
   })
 
   const { mutateAsync: updateTime } = useMutation({
@@ -65,9 +69,9 @@ export function AnimeEpisodie(): JSX.Element {
         id: id ?? '',
         season: Number(season),
         episodieId: data?.data.id ?? '',
-        temp
+        temp,
       })
-    }
+    },
   })
 
   // const checkTimePrev = (currentTime: number, duration: number): void => {
@@ -89,7 +93,7 @@ export function AnimeEpisodie(): JSX.Element {
             width={'100%'}
             height={'450px'}
             ref={playerRef}
-            playing={data.data.url ? true : false}
+            playing={!!data.data.url}
             onProgress={(state: OnProgressProps) => {
               if (Math.round(state.playedSeconds) % 10 === 0) {
                 updateTime(Math.round(state.playedSeconds))

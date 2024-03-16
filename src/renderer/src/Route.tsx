@@ -30,7 +30,10 @@ export function Routes(): JSX.Element {
 
           <Route path="/series" element={<Series />} />
           <Route path="/series/:id" element={<SerieSelect />} />
-          <Route path="/series/:id/episodies/:epId" element={<SerieEpisodie />} />
+          <Route
+            path="/series/:id/episodies/:epId"
+            element={<SerieEpisodie />}
+          />
         </Route>
       }
     />

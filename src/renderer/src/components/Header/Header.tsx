@@ -11,8 +11,8 @@ export function Header(): JSX.Element {
             return clsx(
               'flex items-center text-sm gap-2 text-black-100 hover:text-black-50 py-1 px-3 rounded group hover:bg-red-text',
               {
-                'bg-black-700': isActive
-              }
+                'bg-black-700': isActive,
+              },
             )
           }}
         >
@@ -24,8 +24,8 @@ export function Header(): JSX.Element {
             return clsx(
               'flex items-center text-sm gap-2 text-black-100 hover:text-black-50 py-1 px-3 rounded group hover:bg-red-text',
               {
-                'bg-black-700': isActive
-              }
+                'bg-black-700': isActive,
+              },
             )
           }}
         >
@@ -37,8 +37,8 @@ export function Header(): JSX.Element {
             return clsx(
               'flex items-center text-sm gap-2 text-black-100 hover:text-black-50 py-1 px-3 rounded group hover:bg-red-text',
               {
-                'bg-black-700': isActive
-              }
+                'bg-black-700': isActive,
+              },
             )
           }}
         >
@@ -50,8 +50,8 @@ export function Header(): JSX.Element {
             return clsx(
               'flex items-center text-sm gap-2 text-black-100 hover:text-black-50 py-1 px-3 rounded group hover:bg-red-text',
               {
-                'bg-black-700': isActive
-              }
+                'bg-black-700': isActive,
+              },
             )
           }}
         >
@@ -63,8 +63,8 @@ export function Header(): JSX.Element {
             return clsx(
               'flex items-center text-sm gap-2 text-black-100 hover:text-black-50 py-1 px-3 rounded group hover:bg-red-text',
               {
-                'bg-black-700': isActive
-              }
+                'bg-black-700': isActive,
+              },
             )
           }}
         >

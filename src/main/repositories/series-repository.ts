@@ -3,7 +3,7 @@ import {
   GetSerieByIdResponse,
   GetSeriesResponse,
   Season,
-  Serie
+  Serie,
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
@@ -16,7 +16,10 @@ interface CreateSerieInput {
 }
 
 class SeriesRepository {
-  async getSeriesPageOrganizator(size: number, page: number): Promise<GetSeriesResponse> {
+  async getSeriesPageOrganizator(
+    size: number,
+    page: number,
+  ): Promise<GetSeriesResponse> {
     const objects = store.get<string, Serie>('series')
     const series = Object.values(objects) as Array<Serie>
 
@@ -26,11 +29,16 @@ class SeriesRepository {
     return {
       data: series.slice(startIndex, endIndex),
       isNext: endIndex < series.length,
-      isPrev: startIndex > 0
+      isPrev: startIndex > 0,
     }
   }
 
-  async createSerie({ banner, episodies, name, seasons }: CreateSerieInput): Promise<Serie> {
+  async createSerie({
+    banner,
+    episodies,
+    name,
+    seasons,
+  }: CreateSerieInput): Promise<Serie> {
     const serieId = randomUUID()
 
     const serieSeasons: Array<Season> = []
@@ -48,7 +56,7 @@ class SeriesRepository {
           isTemp: 0,
           isWatched: false,
           reload_at: new Date(),
-          url: `http://localhost:3333/videos/serie/${name}/season ${i}/ep${ep}.mp4`
+          url: `http://localhost:3333/videos/serie/${name}/season ${i}/ep${ep}.mp4`,
         }
 
         episodiesList.push(episodie)
@@ -56,7 +64,7 @@ class SeriesRepository {
       const season: Season = {
         number: i,
         id: seasonId,
-        episodies: episodiesList
+        episodies: episodiesList,
       }
 
       serieSeasons.push(season)
@@ -66,7 +74,7 @@ class SeriesRepository {
       id: serieId,
       name,
       banner,
-      seasons: serieSeasons
+      seasons: serieSeasons,
     }
     store.set(`series.${serieId}`, serie)
     return serie
@@ -75,7 +83,7 @@ class SeriesRepository {
   async getById(id: string): Promise<GetSerieByIdResponse> {
     const serie = store.get<string, Serie>(`series.${id}`)
     return {
-      data: serie
+      data: serie,
     }
   }
 }

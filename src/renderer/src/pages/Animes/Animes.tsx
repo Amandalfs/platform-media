@@ -13,7 +13,7 @@ export function Animes(): JSX.Element {
     queryFn: async (): Promise<GetAnimesResponse> => {
       const response = await window.api.getAnimesByPage({ page, sizeList: 5 })
       return response
-    }
+    },
   })
 
   return (
@@ -25,7 +25,10 @@ export function Animes(): JSX.Element {
     >
       <div className="flex-col h-full w-11/12 mt-16">
         <div className="flex justify-between items-center">
-          <Button disabled={!data?.isPrev} onClick={() => setPage((prevState) => prevState - 1)}>
+          <Button
+            disabled={!data?.isPrev}
+            onClick={() => setPage((prevState) => prevState - 1)}
+          >
             Prev
           </Button>
           <div className="flex gap-4">
@@ -41,7 +44,10 @@ export function Animes(): JSX.Element {
               ))}
             {isLoading && <LoadingSpinner />}
           </div>
-          <Button disabled={!data?.isNext} onClick={() => setPage((prevState) => prevState + 1)}>
+          <Button
+            disabled={!data?.isNext}
+            onClick={() => setPage((prevState) => prevState + 1)}
+          >
             Next
           </Button>
         </div>

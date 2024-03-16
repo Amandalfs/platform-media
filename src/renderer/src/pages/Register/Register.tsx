@@ -9,23 +9,24 @@ export const Register = (): JSX.Element => {
   const [episodies, setEpisodies] = useState('')
   const [image, setImage] = useState<File | null>(null)
 
-  const { mutateAsync: createVideos, isPending: isCreatingVideos } = useMutation({
-    mutationFn: async ({
-      name,
-      categorie,
-      seasons,
-      episodies,
-      banner
-    }: HandleCreateVideosRequest) => {
-      await window.api.createVideos({
+  const { mutateAsync: createVideos, isPending: isCreatingVideos } =
+    useMutation({
+      mutationFn: async ({
         name,
         categorie,
         seasons,
         episodies,
-        banner
-      })
-    }
-  })
+        banner,
+      }: HandleCreateVideosRequest) => {
+        await window.api.createVideos({
+          name,
+          categorie,
+          seasons,
+          episodies,
+          banner,
+        })
+      },
+    })
 
   type Categorie = 'movies' | 'animes' | 'series'
 
@@ -36,7 +37,7 @@ export const Register = (): JSX.Element => {
       categorie: categorie as Categorie,
       seasons: Number(seasons),
       episodies: Number(episodies),
-      banner: image?.path ?? ''
+      banner: image?.path ?? '',
     })
   }
 

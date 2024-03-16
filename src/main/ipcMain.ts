@@ -12,7 +12,7 @@ import {
   GetSeriesRequest,
   GetSeriesResponse,
   HandleCreateVideosRequest,
-  UpdataTimeAnimeSecondsRequest
+  UpdataTimeAnimeSecondsRequest,
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
 import fs from 'fs'
@@ -24,12 +24,19 @@ import { GetAnimeEpisodieByNumberRequest } from './../shared/types/ipc-types'
 
 ipcMain.handle(
   IPC.createVideos,
-  async (_, { banner, categorie, name, episodies, seasons }: HandleCreateVideosRequest) => {
+  async (
+    _,
+    { banner, categorie, name, episodies, seasons }: HandleCreateVideosRequest,
+  ) => {
     const folderRoot = path.join(pathCategories[categorie], name)
 
     if (!fs.existsSync(folderRoot)) fs.mkdirSync(folderRoot)
 
-    if ((categorie === 'animes' || categorie === 'series') && seasons && episodies) {
+    if (
+      (categorie === 'animes' || categorie === 'series') &&
+      seasons &&
+      episodies
+    ) {
       for (let seasonIndex = 1; seasonIndex <= seasons; seasonIndex++) {
         const seasonPath = path.join(folderRoot, `Season ${seasonIndex}`)
         if (!fs.existsSync(seasonPath)) fs.mkdirSync(seasonPath)
@@ -47,7 +54,7 @@ ipcMain.handle(
           banner: `http://localhost:3333/banner-${name}.png`,
           episodies,
           name,
-          seasons
+          seasons,
         })
 
       if (categorie === 'animes' && seasons && episodies)
@@ -55,11 +62,14 @@ ipcMain.handle(
           banner: `http://localhost:3333/banner-${name}.png`,
           episodies,
           name,
-          seasons
+          seasons,
         })
 
       if (categorie === 'movies')
-        moviesRepository.create({ banner: `http://localhost:3333/banner-${name}.png`, name })
+        moviesRepository.create({
+          banner: `http://localhost:3333/banner-${name}.png`,
+          name,
+        })
     } catch (error) {
       console.error('Erro ao salvar arquivo:', error)
     }
@@ -68,33 +78,40 @@ ipcMain.handle(
       const foulderMovie = path.join(folderRoot, 'movie')
       if (!fs.existsSync(foulderMovie)) fs.mkdirSync(foulderMovie)
     }
-
-    return
-  }
+  },
 )
 
 ipcMain.handle(
   IPC.series.getByPage,
-  async (_, { page, sizeList }: GetSeriesRequest): Promise<GetSeriesResponse> => {
+  async (
+    _,
+    { page, sizeList }: GetSeriesRequest,
+  ): Promise<GetSeriesResponse> => {
     const data = seriesRepository.getSeriesPageOrganizator(sizeList, page)
     return data
-  }
+  },
 )
 
 ipcMain.handle(
   IPC.animes.getByPage,
-  async (_, { page, sizeList }: GetAnimesRequest): Promise<GetAnimesResponse> => {
+  async (
+    _,
+    { page, sizeList }: GetAnimesRequest,
+  ): Promise<GetAnimesResponse> => {
     const data = animesRepository.getPageOrganizator(sizeList, page)
     return data
-  }
+  },
 )
 
 ipcMain.handle(
   IPC.movies.getByPage,
-  async (_, { page, sizeList }: GetAnimesRequest): Promise<GetMoviesResponse> => {
+  async (
+    _,
+    { page, sizeList }: GetAnimesRequest,
+  ): Promise<GetMoviesResponse> => {
     const data = moviesRepository.getPageOrganizator(sizeList, page)
     return data
-  }
+  },
 )
 
 ipcMain.handle(
@@ -102,7 +119,7 @@ ipcMain.handle(
   async (_, { id }: GetAnimeByIdRequest): Promise<GetAnimeByIdResponse> => {
     const anime = animesRepository.getById(id)
     return anime
-  }
+  },
 )
 
 ipcMain.handle(
@@ -110,23 +127,31 @@ ipcMain.handle(
   async (_, { id }: GetSerieByIdRequest): Promise<GetSerieByIdResponse> => {
     const serie = seriesRepository.getById(id)
     return serie
-  }
+  },
 )
 
 ipcMain.handle(
   IPC.animes.getEpisodie,
   async (
     _,
-    { id, number, season }: GetAnimeEpisodieByNumberRequest
+    { id, number, season }: GetAnimeEpisodieByNumberRequest,
   ): Promise<GetAnimeEpisodieByNumberResponse> => {
     const anime = animesRepository.getByEpisodie({ id, number, season })
     return anime
-  }
+  },
 )
 
 ipcMain.handle(
   IPC.animes.updateTime,
-  async (_, { id, season, episodieId, temp }: UpdataTimeAnimeSecondsRequest): Promise<void> => {
-    await animesRepository.updataTimeAnimeSeconds({ id, season, episodieId, temp })
-  }
+  async (
+    _,
+    { id, season, episodieId, temp }: UpdataTimeAnimeSecondsRequest,
+  ): Promise<void> => {
+    await animesRepository.updataTimeAnimeSeconds({
+      id,
+      season,
+      episodieId,
+      temp,
+    })
+  },
 )

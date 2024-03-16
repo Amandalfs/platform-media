@@ -8,7 +8,12 @@ interface Props {
   action: () => void
 }
 
-export function ModalTime({ isOpen, setIsOpen, isTemp, action }: Props): JSX.Element {
+export function ModalTime({
+  isOpen,
+  setIsOpen,
+  isTemp,
+  action,
+}: Props): JSX.Element {
   function secondsToHours(seconds: number): string {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -37,7 +42,9 @@ export function ModalTime({ isOpen, setIsOpen, isTemp, action }: Props): JSX.Ele
         <Toast.Title className="mb-2 font-medium text-slate-200 text-sm">
           Quer continuar de onde parou?
         </Toast.Title>
-        <Toast.Description>Voce parou em {secondsToHours(isTemp)}</Toast.Description>
+        <Toast.Description>
+          Voce parou em {secondsToHours(isTemp)}
+        </Toast.Description>
         <Toast.Action altText="d">
           <button className="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-green2 text-green11 shadow-[inset_0_0_0_1px] shadow-green7 hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8">
             Não
