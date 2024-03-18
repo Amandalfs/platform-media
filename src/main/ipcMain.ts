@@ -9,6 +9,8 @@ import {
   GetMoviesResponse,
   GetSerieByIdRequest,
   GetSerieByIdResponse,
+  GetSerieEpisodieByNumberRequest,
+  GetSerieEpisodieByNumberResponse,
   GetSeriesRequest,
   GetSeriesResponse,
   HandleCreateVideosRequest,
@@ -127,6 +129,17 @@ ipcMain.handle(
   IPC.series.getById,
   async (_, { id }: GetSerieByIdRequest): Promise<GetSerieByIdResponse> => {
     const serie = seriesRepository.getById(id)
+    return serie
+  },
+)
+
+ipcMain.handle(
+  IPC.series.getEpisodie,
+  async (
+    _,
+    { id, number, season }: GetSerieEpisodieByNumberRequest,
+  ): Promise<GetSerieEpisodieByNumberResponse> => {
+    const serie = seriesRepository.getByEpisodie({ id, number, season })
     return serie
   },
 )

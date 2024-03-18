@@ -1,6 +1,8 @@
 import {
   Episodie,
   GetSerieByIdResponse,
+  GetSerieEpisodieByNumberRequest,
+  GetSerieEpisodieByNumberResponse,
   GetSeriesResponse,
   Season,
   Serie,
@@ -106,6 +108,46 @@ class SeriesRepository {
     const serie = store.get<string, SerieStore>(`series.${id}`)
     return {
       data: serie,
+    }
+  }
+
+  async getByEpisodie({
+    id,
+    number,
+    season,
+  }: GetSerieEpisodieByNumberRequest): Promise<GetSerieEpisodieByNumberResponse> {
+    const anime = store.get<string, SerieStore>(`series.${id}`)
+    const seasons = Object.values(anime.seasons)
+    const [{ episodies: episodiesObject }] = seasons.filter(
+      (seasonObject) => seasonObject.number === Number(season),
+    )
+    const episodies = Object.values(episodiesObject)
+    const [episodie] = episodies.filter(
+      (episodie) => episodie.number === Number(number),
+    )
+
+    let isPrev = ''
+    let isNext = ''
+
+    if (Number(season) > 1 && Number(number) === 1) {
+      isPrev = `/series/${id}/seasons/${Number(season) - 1}/episodies/${episodies.length}`
+    } else if (Number(number) > 1) {
+      isPrev = `/series/${id}/seasons/${Number(season)}/episodies/${Number(number) - 1}`
+    }
+
+    if (
+      Number(season) < season.length &&
+      episodie.number === episodies.length
+    ) {
+      isNext = `/series/${id}/seasons/${season}/episodies/${number}`
+    } else if (Number(number) < episodies.length) {
+      isNext = `/series/${id}/seasons/${Number(season)}/episodies/${Number(number) + 1}`
+    }
+
+    return {
+      data: episodie,
+      isNext,
+      isPrev,
     }
   }
 }

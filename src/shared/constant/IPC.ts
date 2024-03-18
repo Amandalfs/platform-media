@@ -4,6 +4,7 @@ export const IPC = {
     getByPage: 'series-get-page',
     getById: 'serie-get-page',
     getByNumberEpisodie: 'serie-get-number-episodie',
+    getEpisodie: 'serie-get-episodie',
   },
   animes: {
     getByPage: 'animes-get-page',
