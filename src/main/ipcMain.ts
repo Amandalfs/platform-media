@@ -17,6 +17,7 @@ import {
   UpdataEpisodieIsWatchedRequest,
   UpdataTimeAnimeSecondsRequest,
   UpdataTimeSerieSecondsRequest,
+  UpdatedEpisodieIsWatchedRequest,
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
 import fs from 'fs'
@@ -156,6 +157,20 @@ ipcMain.handle(
       season,
       episodieId,
       temp,
+    })
+  },
+)
+
+ipcMain.handle(
+  IPC.series.watchedEpisodie,
+  async (
+    _,
+    { id, season, episodieId }: UpdatedEpisodieIsWatchedRequest,
+  ): Promise<void> => {
+    await seriesRepository.updatedEpisodieIsWatchedRequest({
+      id,
+      season,
+      episodieId,
     })
   },
 )

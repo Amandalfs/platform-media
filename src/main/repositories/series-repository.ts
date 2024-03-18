@@ -9,6 +9,7 @@ import {
   SerieSeasonsStore,
   SerieStore,
   UpdataTimeSerieSecondsRequest,
+  UpdatedEpisodieIsWatchedRequest,
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
@@ -164,10 +165,29 @@ class SeriesRepository {
       (seasonObject) => seasonObject.number === season,
     )
     store.set(
-      `animes.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`,
+      `series.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`,
       {
         ...seasonFilted.episodies[episodieId],
         isTemp: temp,
+      },
+    )
+  }
+
+  async updatedEpisodieIsWatchedRequest({
+    episodieId,
+    id,
+    season,
+  }: UpdatedEpisodieIsWatchedRequest): Promise<void> {
+    const serie = store.get<string, SerieStore>(`series.${id}`)
+    const seasons = Object.values(serie.seasons)
+    const [seasonFilted] = seasons.filter(
+      (seasonObject) => seasonObject.number === season,
+    )
+    store.set(
+      `series.${id}.seasons.${seasonFilted.id}.episodies.${episodieId}`,
+      {
+        ...seasonFilted.episodies[episodieId],
+        isWatched: true,
       },
     )
   }
