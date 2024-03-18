@@ -27,14 +27,14 @@ class SeriesRepository {
     page: number,
   ): Promise<GetSeriesResponse> {
     const objects = store.get<string, SerieStore>('series')
-    const animes = Object.values(objects)
+    const series = Object.values(objects)
 
     const startIndex = Math.max(0, (page - 1) * size)
-    const endIndex = Math.min(animes.length, page * size)
+    const endIndex = Math.min(series.length, page * size)
 
     return {
-      data: animes.slice(startIndex, endIndex),
-      isNext: endIndex < animes.length,
+      data: series.slice(startIndex, endIndex),
+      isNext: endIndex < series.length,
       isPrev: startIndex > 0,
     }
   }
@@ -78,7 +78,7 @@ class SeriesRepository {
           isTemp: 0,
           isWatched: false,
           reload_at: new Date(),
-          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`,
+          url: `http://localhost:3333/videos/series/${name}/season ${i}/ep${ep}.mp4`,
         }
       }
       const season: Season = {
@@ -118,8 +118,8 @@ class SeriesRepository {
     number,
     season,
   }: GetSerieEpisodieByNumberRequest): Promise<GetSerieEpisodieByNumberResponse> {
-    const anime = store.get<string, SerieStore>(`series.${id}`)
-    const seasons = Object.values(anime.seasons)
+    const serie = store.get<string, SerieStore>(`series.${id}`)
+    const seasons = Object.values(serie.seasons)
     const [{ episodies: episodiesObject }] = seasons.filter(
       (seasonObject) => seasonObject.number === Number(season),
     )
@@ -159,8 +159,8 @@ class SeriesRepository {
     season,
     temp,
   }: UpdataTimeSerieSecondsRequest): Promise<void> {
-    const anime = store.get<string, SerieStore>(`animes.${id}`)
-    const seasons = Object.values(anime.seasons)
+    const serie = store.get<string, SerieStore>(`series.${id}`)
+    const seasons = Object.values(serie.seasons)
     const [seasonFilted] = seasons.filter(
       (seasonObject) => seasonObject.number === season,
     )
