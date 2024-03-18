@@ -1,5 +1,5 @@
 appId: com.amandalfs.app
-productName: PlatformMedia
+productName: platform-playings-zony
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: platformMedia
+  executableName: platform-playings-zony
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -39,4 +39,4 @@ linux:
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
-npmRebuild: false
+npmRebuild: true
