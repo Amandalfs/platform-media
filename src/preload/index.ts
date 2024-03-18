@@ -19,6 +19,8 @@ import {
   UpdataEpisodieIsWatchedRequest,
   GetSerieEpisodieByNumberRequest,
   GetSerieEpisodieByNumberResponse,
+  UpdatedEpisodieIsWatchedRequest,
+  UpdataTimeSerieSecondsRequest,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -45,6 +47,14 @@ export const api = {
     req: GetSerieEpisodieByNumberRequest,
   ): Promise<GetSerieEpisodieByNumberResponse> {
     return ipcRenderer.invoke(IPC.series.getEpisodie, req)
+  },
+  serieUpdateTime(req: UpdataTimeSerieSecondsRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.series.updateTime, req)
+  },
+  serieUpdateEpisodieWatched(
+    req: UpdatedEpisodieIsWatchedRequest,
+  ): Promise<void> {
+    return ipcRenderer.invoke(IPC.series.watchedEpisodie, req)
   },
   getAnimeEpisodie(
     req: GetAnimeEpisodieByNumberRequest,

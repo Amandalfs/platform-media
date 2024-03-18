@@ -10,7 +10,27 @@ type EpisodeProps = {
   watched: boolean
   watchedMinutes?: string
   serieId: string
-  id: string
+  season: number
+}
+
+function formatTime(seconds: number): string {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  let formattedTime = ''
+
+  if (hours > 0) {
+    formattedTime += `${hours} hora${hours !== 1 ? 's' : ''} `
+  }
+
+  if (minutes > 0 || hours > 0) {
+    formattedTime += `${minutes} minuto${minutes !== 1 ? 's' : ''} `
+  }
+
+  formattedTime += `${remainingSeconds} segundo${remainingSeconds !== 1 ? 's' : ''}`
+
+  return formattedTime
 }
 
 const Episode = ({
@@ -18,19 +38,23 @@ const Episode = ({
   watched,
   watchedMinutes,
   serieId,
-  id,
+  season,
 }: EpisodeProps): JSX.Element => (
-  <Link to={`/series/${serieId}/episodies/${id}`}>
+  <Link to={`/series/${serieId}/seasons/${season}/episodies/${number}`}>
     <SeparatorHorizontal />
     <div className="flex justify-start gap-4 h-8">
-      <img src="" alt="" className="h-auto w-auto" />
-      <h2 className="ml-2">{number} Episódio</h2>
+      <div className="flex w-32">
+        <img src={''} alt="" className="h-auto w-auto" />
+        <h2 className="ml-2">{number} Episódio</h2>
+      </div>
       <SeparatorVertical />
-      {watchedMinutes ? (
-        <div className="ml-2">{watchedMinutes}</div>
-      ) : (
-        <div className="ml-2">00:00</div>
-      )}
+      <div className="flex w-52">
+        {watchedMinutes ? (
+          <div className="ml-2">{formatTime(Number(watchedMinutes))}</div>
+        ) : (
+          <div className="ml-2">00:00</div>
+        )}
+      </div>
       <SeparatorVertical />
       <button
         className={`ml-2 w-6 h-6 flex items-center justify-center ${
@@ -57,7 +81,7 @@ const SeparatorHorizontal = (): JSX.Element => {
 }
 
 const Season = ({ number, children }: SeasonProps): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="mb-4">
@@ -97,7 +121,8 @@ export function SerieSelect(): JSX.Element {
     <div className="p-4">
       <div className="flex flex-col items-center justify-center mb-4">
         <h1 className="text-3xl font-bold mb-2">
-          {data && `${data.data.name} - ${data.data.seasons.length} temporada`}
+          {data &&
+            `${data.data.name} - ${Object.values(data.data.seasons).length} temporada`}
         </h1>
         <img src={data?.data.banner} alt="" className="w-auto h-52 mb-4" />
       </div>
@@ -108,11 +133,11 @@ export function SerieSelect(): JSX.Element {
               {Object.values(season.episodies).map((episodie) => (
                 <Episode
                   serieId={id ?? ''}
-                  id={episodie.id}
                   number={episodie.number}
                   watched={episodie.isWatched}
                   watchedMinutes={String(episodie.isTemp)}
                   key={episodie.id}
+                  season={season.number}
                 />
               ))}
             </Season>
