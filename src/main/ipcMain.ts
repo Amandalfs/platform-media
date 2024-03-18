@@ -25,7 +25,6 @@ import { seriesRepository } from './repositories/series-repository'
 import { animesRepository } from './repositories/animes-repository'
 import { moviesRepository } from './repositories/movies-repository'
 import { GetAnimeEpisodieByNumberRequest } from './../shared/types/ipc-types'
-import { GetSeriesResponse } from '~/src/shared/types/ipc-types'
 
 ipcMain.handle(
   IPC.createVideos,
