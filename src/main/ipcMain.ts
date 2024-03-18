@@ -16,6 +16,7 @@ import {
   HandleCreateVideosRequest,
   UpdataEpisodieIsWatchedRequest,
   UpdataTimeAnimeSecondsRequest,
+  UpdataTimeSerieSecondsRequest,
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
 import fs from 'fs'
@@ -24,6 +25,7 @@ import { seriesRepository } from './repositories/series-repository'
 import { animesRepository } from './repositories/animes-repository'
 import { moviesRepository } from './repositories/movies-repository'
 import { GetAnimeEpisodieByNumberRequest } from './../shared/types/ipc-types'
+import { GetSeriesResponse } from '~/src/shared/types/ipc-types'
 
 ipcMain.handle(
   IPC.createVideos,
@@ -141,6 +143,21 @@ ipcMain.handle(
   ): Promise<GetSerieEpisodieByNumberResponse> => {
     const serie = seriesRepository.getByEpisodie({ id, number, season })
     return serie
+  },
+)
+
+ipcMain.handle(
+  IPC.series.updateTime,
+  async (
+    _,
+    { id, season, episodieId, temp }: UpdataTimeSerieSecondsRequest,
+  ): Promise<void> => {
+    await seriesRepository.updataTimeSerieSeconds({
+      id,
+      season,
+      episodieId,
+      temp,
+    })
   },
 )
 
