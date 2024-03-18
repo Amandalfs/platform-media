@@ -1,6 +1,6 @@
 import { ThemeProvider } from 'next-themes'
 import { Routes } from './Route'
-import './assets/index.css'
+import './index.css'
 import { Theme } from '@radix-ui/themes'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './lib/reactQuery'

@@ -1,5 +1,4 @@
 import { Button, Flex } from '@radix-ui/themes'
-import image from '../../assets/teenwolf.jpg'
 import { CardMedium } from '../../components/cards/CardMedium'
 
 export function Home(): JSX.Element {
@@ -46,7 +45,7 @@ export function Home(): JSX.Element {
             {[...Array(5)].map((_, index) => (
               <CardMedium
                 key={index}
-                image={image}
+                image=""
                 status="Continuar"
                 title="Teen Wolf"
               />
@@ -64,7 +63,7 @@ export function Home(): JSX.Element {
             {[...Array(5)].map((_, index) => (
               <CardMedium
                 key={index}
-                image={image}
+                image=""
                 status="Continuar"
                 title="Teen Wolf"
               />
@@ -81,7 +80,7 @@ export function Home(): JSX.Element {
             {[...Array(5)].map((_, index) => (
               <CardMedium
                 key={index}
-                image={image}
+                image=""
                 status="Continuar"
                 title="Teen Wolf"
               />

@@ -1,7 +1,6 @@
 import { app, shell, BrowserWindow } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
 import express from 'express'
 import debug from 'electron-debug'
 import { createFileRoute, createURLRoute } from 'electron-router-dom'
@@ -10,7 +9,6 @@ import './ipcMain'
 import appStatic from './staticServer'
 // import { createTray } from './trayRemotePlay'
 // Ativa o modo de depuração
-debug()
 
 function createWindow(): void {
   // Create the browser window.
@@ -19,7 +17,9 @@ function createWindow(): void {
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux'
+      ? { icon: path.join(__dirname, '../../build/icon.png') }
+      : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -49,6 +49,7 @@ function createWindow(): void {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env.ELECTRON_RENDERER_URL) {
+    debug()
     mainWindow.loadURL(devServerURL)
   } else {
     mainWindow.loadFile(...fileRoute)

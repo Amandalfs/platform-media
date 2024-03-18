@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import * as Collapsible from '@radix-ui/react-collapsible'
-import image from '../../../assets/teenwolf.jpg'
 import { useQuery } from '@tanstack/react-query'
 import { GetSerieByIdResponse } from '~/src/shared/types/ipc-types'
 import LoadingSpinner from '../../../components/Loading/Loading'
@@ -24,7 +23,7 @@ const Episode = ({
   <Link to={`/series/${serieId}/episodies/${id}`}>
     <SeparatorHorizontal />
     <div className="flex justify-start gap-4 h-8">
-      <img src={image} alt="" className="h-auto w-auto" />
+      <img src="" alt="" className="h-auto w-auto" />
       <h2 className="ml-2">{number} Episódio</h2>
       <SeparatorVertical />
       {watchedMinutes ? (
