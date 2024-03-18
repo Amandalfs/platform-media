@@ -12,6 +12,7 @@ import {
   GetSeriesRequest,
   GetSeriesResponse,
   HandleCreateVideosRequest,
+  UpdataEpisodieIsWatchedRequest,
   UpdataTimeAnimeSecondsRequest,
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
@@ -152,6 +153,20 @@ ipcMain.handle(
       season,
       episodieId,
       temp,
+    })
+  },
+)
+
+ipcMain.handle(
+  IPC.animes.watchedEpisodie,
+  async (
+    _,
+    { id, season, episodieId }: UpdataEpisodieIsWatchedRequest,
+  ): Promise<void> => {
+    await animesRepository.updataEpisodieIsWatchedRequest({
+      id,
+      season,
+      episodieId,
     })
   },
 )

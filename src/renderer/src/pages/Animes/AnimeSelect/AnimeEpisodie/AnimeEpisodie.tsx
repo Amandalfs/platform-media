@@ -74,6 +74,18 @@ export function AnimeEpisodie(): JSX.Element {
     },
   })
 
+  const { mutateAsync: updateWatched } = useMutation({
+    mutationFn: async (): Promise<void> => {
+      if (id && season && data?.data.id) {
+        await window.api.animeUpdateEpisodieWatched({
+          id,
+          season: Number(season),
+          episodieId: data?.data.id,
+        })
+      }
+    },
+  })
+
   return (
     <div className="flex flex-col items-center w-[50%] mx-auto mt-16">
       <h1 className="font-medium text-slate-400 text-xl my-4">
@@ -99,6 +111,7 @@ export function AnimeEpisodie(): JSX.Element {
                   Math.round(playerRef.current.getCurrentTime()) >=
                   Math.round(playerRef.current.getDuration()) - 120
                 ) {
+                  updateWatched()
                   setIsFinished(true)
                 } else {
                   setIsFinished(false)
@@ -116,6 +129,7 @@ export function AnimeEpisodie(): JSX.Element {
                   Math.round(playerRef.current.getCurrentTime())
                 ) {
                   updateTime(Math.round(playerRef.current.getCurrentTime()))
+                  updateWatched()
                   navigate(data.isNext)
                 }
               }

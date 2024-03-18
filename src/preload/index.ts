@@ -16,6 +16,7 @@ import {
   GetAnimeEpisodieByNumberResponse,
   GetAnimeEpisodieByNumberRequest,
   UpdataTimeAnimeSecondsRequest,
+  UpdataEpisodieIsWatchedRequest,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -46,6 +47,11 @@ export const api = {
   animeUpdateTime(req: UpdataTimeAnimeSecondsRequest): Promise<void> {
     return ipcRenderer.invoke(IPC.animes.updateTime, req)
   },
+  animeUpdateEpisodieWatched(
+    req: UpdataEpisodieIsWatchedRequest,
+  ): Promise<void> {
+    return ipcRenderer.invoke(IPC.animes.watchedEpisodie, req)
+  },
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -59,8 +65,10 @@ if (process.contextIsolated) {
     console.error(error)
   }
 } else {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (define in dts)
   window.electron = electronAPI
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (define in dts)
   window.api = api
 }

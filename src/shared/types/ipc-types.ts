@@ -99,6 +99,12 @@ export interface UpdataTimeAnimeSecondsRequest {
   temp: number
 }
 
+export interface UpdataEpisodieIsWatchedRequest {
+  id: string
+  episodieId: string
+  season: number
+}
+
 // Response
 
 export interface GetAnimesResponse {

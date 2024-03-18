@@ -81,7 +81,7 @@ const SeparatorHorizontal = (): JSX.Element => {
 }
 
 const Season = ({ number, children }: SeasonProps): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="mb-4">
