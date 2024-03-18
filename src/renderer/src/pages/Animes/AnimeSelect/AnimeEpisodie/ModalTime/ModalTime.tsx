@@ -37,23 +37,23 @@ export function ModalTime({
       <Toast.Root
         open={isOpen}
         onOpenChange={setIsOpen}
-        className="fixed top-[120px] left-1/2 transform -translate-x-1/2 bg-gray-600 rounded-lg p-4"
+        className="fixed top-[120px] left-1/2 transform -translate-x-1/2 bg-gray-600 rounded-lg h-28 px-6"
       >
-        <Toast.Title className="mb-2 font-medium text-slate-200 text-sm">
+        <Toast.Title className="mt-4 mb-2 font-medium text-slate-200 text-sm">
           Quer continuar de onde parou?
         </Toast.Title>
-        <Toast.Description>
+        <Toast.Description className="mb-2 font-mono text-slate-200 text-sm">
           Voce parou em {secondsToHours(isTemp)}
         </Toast.Description>
-        <Toast.Action altText="d">
-          <button className="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-green2 text-green11 shadow-[inset_0_0_0_1px] shadow-green7 hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8">
+        <Toast.Action altText="d" className="flex gap-2">
+          <button className="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-black-400 text-red-text shadow-[inset_0_0_0_1px] shadow-red-text hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8">
             Não
           </button>
           <button
             onClick={() => {
               action()
             }}
-            className="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-green2 text-green11 shadow-[inset_0_0_0_1px] shadow-green7 hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8"
+            className="inline-flex items-center justify-center rounded font-medium text-xs px-[10px] leading-[25px] h-[25px] bg-black-400 text-red-text shadow-[inset_0_0_0_1px] shadow-red-text hover:shadow-[inset_0_0_0_1px] hover:shadow-green8 focus:shadow-[0_0_0_2px] focus:shadow-green8"
           >
             Continuar
           </button>
@@ -64,7 +64,7 @@ export function ModalTime({
           </button>
         </Toast.Close>
       </Toast.Root>
-      <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-[25px] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
+      <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
     </Toast.Provider>
   )
 }

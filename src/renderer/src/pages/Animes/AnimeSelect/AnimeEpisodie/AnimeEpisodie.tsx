@@ -40,7 +40,7 @@ export function AnimeEpisodie(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isPrimary, setIsPrimary] = useState(true)
   const [isFinished, setIsFinished] = useState(false)
-  const playerRef = useRef(null)
+  const playerRef = useRef<ReactPlayer>(null)
   const navigate = useNavigate()
 
   const { id, season, episodie } = useParams()
@@ -74,11 +74,6 @@ export function AnimeEpisodie(): JSX.Element {
     },
   })
 
-  // const checkTimePrev = (currentTime: number, duration: number): void => {
-  //   if (duration - currentTime < 60 && data?.isNext) {
-  //   }
-  // }
-
   return (
     <div className="flex flex-col items-center w-[50%] mx-auto mt-16">
       <h1 className="font-medium text-slate-400 text-xl my-4">
@@ -95,29 +90,34 @@ export function AnimeEpisodie(): JSX.Element {
             ref={playerRef}
             playing={!!data.data.url}
             onProgress={(state: OnProgressProps) => {
-              if (Math.round(state.playedSeconds) % 10 === 0) {
-                updateTime(Math.round(state.playedSeconds))
-              }
+              if (playerRef.current) {
+                if (Math.round(state.playedSeconds) % 10 === 0) {
+                  updateTime(Math.round(state.playedSeconds))
+                }
 
-              if (
-                Math.round(playerRef.current.getCurrentTime()) >=
-                Math.round(playerRef.current.getDuration()) - 120
-              ) {
-                setIsFinished(true)
-              } else {
-                setIsFinished(false)
+                if (
+                  Math.round(playerRef.current.getCurrentTime()) >=
+                  Math.round(playerRef.current.getDuration()) - 120
+                ) {
+                  setIsFinished(true)
+                } else {
+                  setIsFinished(false)
+                }
               }
             }}
             onPause={() => {
-              updateTime(Math.round(playerRef.current.getCurrentTime()))
+              if (playerRef.current)
+                updateTime(Math.round(playerRef.current.getCurrentTime()))
             }}
             onEnded={() => {
-              if (
-                Math.round(playerRef.current.getDuration()) ===
-                Math.round(playerRef.current.getCurrentTime())
-              ) {
-                updateTime(Math.round(playerRef.current.getCurrentTime()))
-                navigate(data.isNext)
+              if (playerRef.current) {
+                if (
+                  Math.round(playerRef.current.getDuration()) ===
+                  Math.round(playerRef.current.getCurrentTime())
+                ) {
+                  updateTime(Math.round(playerRef.current.getCurrentTime()))
+                  navigate(data.isNext)
+                }
               }
             }}
           />
@@ -130,7 +130,11 @@ export function AnimeEpisodie(): JSX.Element {
         setIsOpen={setIsOpen}
         isTemp={data?.data.isTemp ?? 0}
         action={() => {
-          if (playerRef.current) {
+          if (
+            playerRef.current &&
+            data?.data.isTemp &&
+            typeof data?.data.isTemp === 'number'
+          ) {
             playerRef.current.seekTo(data?.data.isTemp)
           }
         }}

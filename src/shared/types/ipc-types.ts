@@ -1,3 +1,53 @@
+// objects
+
+export interface Episodie {
+  number: number
+  id: string
+  isWatched: boolean
+  isTemp: number
+  created_at: Date
+  reload_at: Date
+  url: string
+}
+export interface Season {
+  number: number
+  id: string
+  episodies: Array<Episodie>
+}
+
+export interface Anime {
+  id: string
+  name: string
+  banner: string
+  seasons: Array<Season>
+}
+
+export interface Serie {
+  id: string
+  name: string
+  banner: string
+  seasons: Array<Season>
+}
+
+export interface Movie {
+  id: string
+  name: string
+  banner: string
+  url: string
+  isWatched: boolean
+  isTemp: number
+  created_at: Date
+  reload_at: Date
+}
+
+export interface AnimeSeasonsStore extends Omit<Season, 'episodies'> {
+  episodies: Record<string, Episodie>
+}
+
+export interface AnimeStore extends Omit<Anime, 'seasons'> {
+  seasons: Record<string, AnimeSeasonsStore>
+}
+
 // Request
 export interface HandleCreateVideosRequest {
   name: string
@@ -87,54 +137,4 @@ export interface GetSerieEpisodieByNumberResponse {
   data: Episodie
   isNext: string
   isPrev: string
-}
-
-// objects
-
-export interface Episodie {
-  number: number
-  id: string
-  isWatched: boolean
-  isTemp: number
-  created_at: Date
-  reload_at: Date
-  url: string
-}
-export interface Season {
-  number: number
-  id: string
-  episodies: Array<Episodie>
-}
-
-export interface Anime {
-  id: string
-  name: string
-  banner: string
-  seasons: Array<Season>
-}
-
-export interface Serie {
-  id: string
-  name: string
-  banner: string
-  seasons: Array<Season>
-}
-
-export interface Movie {
-  id: string
-  name: string
-  banner: string
-  url: string
-  isWatched: boolean
-  isTemp: number
-  created_at: Date
-  reload_at: Date
-}
-
-interface AnimeSeasonsStore extends Omit<Season, 'episodies'> {
-  episodies: Record<string, Episodie>
-}
-
-interface AnimeStore extends Omit<Anime, 'seasons'> {
-  seasons: Record<string, AnimeSeasonsStore>
 }
