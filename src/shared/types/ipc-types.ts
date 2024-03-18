@@ -47,6 +47,13 @@ export interface AnimeSeasonsStore extends Omit<Season, 'episodies'> {
 export interface AnimeStore extends Omit<Anime, 'seasons'> {
   seasons: Record<string, AnimeSeasonsStore>
 }
+export interface SerieSeasonsStore extends Omit<Season, 'episodies'> {
+  episodies: Record<string, Episodie>
+}
+
+export interface SerieStore extends Omit<Serie, 'seasons'> {
+  seasons: Record<string, AnimeSeasonsStore>
+}
 
 // Request
 export interface HandleCreateVideosRequest {
@@ -114,7 +121,7 @@ export interface GetAnimesResponse {
 }
 
 export interface GetSeriesResponse {
-  data: Array<Serie>
+  data: Array<SerieStore>
   isNext: boolean
   isPrev: boolean
 }
@@ -130,7 +137,7 @@ export interface GetAnimeByIdResponse {
 }
 
 export interface GetSerieByIdResponse {
-  data: Serie
+  data: SerieStore
 }
 
 export interface GetAnimeEpisodieByNumberResponse {

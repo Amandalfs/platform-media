@@ -103,9 +103,9 @@ export function SerieSelect(): JSX.Element {
       </div>
       <div className="w-[80%] mx-auto">
         {data &&
-          data.data.seasons.map((season) => (
+          Object.values(data.data.seasons).map((season) => (
             <Season key={season.id} number={season.number}>
-              {season.episodies.map((episodie) => (
+              {Object.values(season.episodies).map((episodie) => (
                 <Episode
                   serieId={id ?? ''}
                   id={episodie.id}

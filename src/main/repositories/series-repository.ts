@@ -4,6 +4,8 @@ import {
   GetSeriesResponse,
   Season,
   Serie,
+  SerieSeasonsStore,
+  SerieStore,
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
@@ -20,15 +22,15 @@ class SeriesRepository {
     size: number,
     page: number,
   ): Promise<GetSeriesResponse> {
-    const objects = store.get<string, Serie>('series')
-    const series = Object.values(objects) as Array<Serie>
+    const objects = store.get<string, SerieStore>('series')
+    const animes = Object.values(objects)
 
     const startIndex = Math.max(0, (page - 1) * size)
-    const endIndex = Math.min(series.length, page * size)
+    const endIndex = Math.min(animes.length, page * size)
 
     return {
-      data: series.slice(startIndex, endIndex),
-      isNext: endIndex < series.length,
+      data: animes.slice(startIndex, endIndex),
+      isNext: endIndex < animes.length,
       isPrev: startIndex > 0,
     }
   }
@@ -42,24 +44,38 @@ class SeriesRepository {
     const serieId = randomUUID()
 
     const serieSeasons: Array<Season> = []
+    const seriesByKey: Record<string, SerieSeasonsStore> = {}
 
     for (let i = 1; i <= seasons; i++) {
       const seasonId = randomUUID()
-
+      seriesByKey[seasonId] = {
+        number: i,
+        id: seasonId,
+        episodies: {},
+      }
       const episodiesList: Array<Episodie> = []
       for (let ep = 1; ep <= episodies; ep++) {
         const episodieId = randomUUID()
         const episodie: Episodie = {
-          number: i,
+          number: ep,
           id: episodieId,
           created_at: new Date(),
           isTemp: 0,
           isWatched: false,
           reload_at: new Date(),
-          url: `http://localhost:3333/videos/serie/${name}/season ${i}/ep${ep}.mp4`,
+          url: `http://localhost:3333/videos/series/${name}/season ${i}/ep${ep}.mp4`,
         }
 
         episodiesList.push(episodie)
+        seriesByKey[seasonId].episodies[episodieId] = {
+          number: ep,
+          id: episodieId,
+          created_at: new Date(),
+          isTemp: 0,
+          isWatched: false,
+          reload_at: new Date(),
+          url: `http://localhost:3333/videos/animes/${name}/season ${i}/ep${ep}.mp4`,
+        }
       }
       const season: Season = {
         number: i,
@@ -76,12 +92,18 @@ class SeriesRepository {
       banner,
       seasons: serieSeasons,
     }
-    store.set(`series.${serieId}`, serie)
+    const ObjetctSerieSave = {
+      id: serieId,
+      name,
+      banner,
+      seasons: seriesByKey,
+    }
+    store.set(`series.${serieId}`, ObjetctSerieSave)
     return serie
   }
 
   async getById(id: string): Promise<GetSerieByIdResponse> {
-    const serie = store.get<string, Serie>(`series.${id}`)
+    const serie = store.get<string, SerieStore>(`series.${id}`)
     return {
       data: serie,
     }
