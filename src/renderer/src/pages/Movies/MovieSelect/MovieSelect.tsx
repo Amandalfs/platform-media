@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import ReactPlayer from 'react-player'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRef, useState } from 'react'
 import { ModalTime } from './ModalTime/ModalTime'
 import { OnProgressProps } from 'react-player/base'
@@ -14,9 +14,8 @@ const SeparatorHorizontal = (): JSX.Element => {
 export function MovieSelected(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isPrimary, setIsPrimary] = useState(true)
-  //   const [isFinished, setIsFinished] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
-
+  const navigate = useNavigate()
   const { id } = useParams()
 
   const { data, isLoading } = useQuery({
@@ -35,28 +34,26 @@ export function MovieSelected(): JSX.Element {
     },
   })
 
-  //   const { mutateAsync: updateTime } = useMutation({
-  //     mutationFn: async (temp: number): Promise<void> => {
-  //       await window.api.serieUpdateTime({
-  //         id: id ?? '',
-  //         season: Number(season),
-  //         episodieId: data?.data.id ?? '',
-  //         temp,
-  //       })
-  //     },
-  //   })
+  const { mutateAsync: updateTime } = useMutation({
+    mutationFn: async (temp: number): Promise<void> => {
+      if (id && typeof id === 'string') {
+        await window.api.updateMovieTime({
+          id,
+          temp,
+        })
+      }
+    },
+  })
 
-  //   const { mutateAsync: updateWatched } = useMutation({
-  //     mutationFn: async (): Promise<void> => {
-  //       if (id && season && data?.data.id) {
-  //         await window.api.serieUpdateEpisodieWatched({
-  //           id,
-  //           season: Number(season),
-  //           episodieId: data?.data.id,
-  //         })
-  //       }
-  //     },
-  //   })
+  const { mutateAsync: updateWatched } = useMutation({
+    mutationFn: async (): Promise<void> => {
+      if (id && typeof id === 'string') {
+        await window.api.updateMovieIsWatched({
+          id,
+        })
+      }
+    },
+  })
 
   return (
     <div className="flex flex-col items-center w-[50%] mx-auto mt-16">
@@ -74,39 +71,36 @@ export function MovieSelected(): JSX.Element {
             height={'450px'}
             ref={playerRef}
             playing={!!data.data.url}
-            // onProgress={(state: OnProgressProps) => {
-            //   if (playerRef.current) {
-            //     if (Math.round(state.playedSeconds) % 10 === 0) {
-            //       updateTime(Math.round(state.playedSeconds))
-            //     }
+            onProgress={(state: OnProgressProps) => {
+              if (playerRef.current) {
+                if (Math.round(state.playedSeconds) % 10 === 0) {
+                  updateTime(Math.round(state.playedSeconds))
+                }
 
-            //     if (
-            //       Math.round(playerRef.current.getCurrentTime()) >=
-            //       Math.round(playerRef.current.getDuration()) - 120
-            //     ) {
-            //       updateWatched()
-            //       setIsFinished(true)
-            //     } else {
-            //       setIsFinished(false)
-            //     }
-            //   }
-            // }}
-            // onPause={() => {
-            //   if (playerRef.current)
-            //     updateTime(Math.round(playerRef.current.getCurrentTime()))
-            // }}
-            // onEnded={() => {
-            //   if (playerRef.current) {
-            //     if (
-            //       Math.round(playerRef.current.getDuration()) ===
-            //       Math.round(playerRef.current.getCurrentTime())
-            //     ) {
-            //       updateTime(Math.round(playerRef.current.getCurrentTime()))
-            //       updateWatched()
-            //       navigate(data.isNext)
-            //     }
-            //   }
-            // }}
+                if (
+                  Math.round(playerRef.current.getCurrentTime()) >=
+                  Math.round(playerRef.current.getDuration()) - 120
+                ) {
+                  updateWatched()
+                }
+              }
+            }}
+            onPause={() => {
+              if (playerRef.current)
+                updateTime(Math.round(playerRef.current.getCurrentTime()))
+            }}
+            onEnded={() => {
+              if (playerRef.current) {
+                if (
+                  Math.round(playerRef.current.getDuration()) ===
+                  Math.round(playerRef.current.getCurrentTime())
+                ) {
+                  updateTime(Math.round(playerRef.current.getCurrentTime()))
+                  updateWatched()
+                  navigate('/movies')
+                }
+              }
+            }}
           />
         )}
       </div>

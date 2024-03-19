@@ -129,6 +129,14 @@ export interface UpdatedEpisodieIsWatchedRequest {
   season: number
 }
 
+export interface UpdatedMovieIsWatchedRequest {
+  id: string
+}
+
+export interface UpdatedMovieTimeRequest {
+  id: string
+  temp: number
+}
 // Response
 
 export interface GetAnimesResponse {

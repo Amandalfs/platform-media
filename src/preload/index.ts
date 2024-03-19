@@ -22,6 +22,8 @@ import {
   UpdataTimeSerieSecondsRequest,
   GetMovieByIdRequest,
   GetMovieByIdResponse,
+  UpdatedMovieTimeRequest,
+  UpdatedMovieIsWatchedRequest,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -55,6 +57,12 @@ export const api = {
   },
   getMovieById(req: GetMovieByIdRequest): Promise<GetMovieByIdResponse> {
     return ipcRenderer.invoke(IPC.movies.getById, req)
+  },
+  updateMovieTime(req: UpdatedMovieTimeRequest) {
+    return ipcRenderer.invoke(IPC.movies.updateTime, req)
+  },
+  updateMovieIsWatched(req: UpdatedMovieIsWatchedRequest) {
+    return ipcRenderer.invoke(IPC.movies.isWatched, req)
   },
 
   getAnimesByPage(req: GetAnimesRequest): Promise<GetAnimesResponse> {

@@ -20,5 +20,7 @@ export const IPC = {
     getByPage: 'movies-get-page',
     getById: 'movie-get-by-id',
     getByNumberEpisodie: 'movie-get-number-episodie',
+    updateTime: 'movie-update-time',
+    isWatched: 'movie-is-watched',
   },
 }

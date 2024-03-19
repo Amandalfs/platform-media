@@ -21,6 +21,8 @@ import {
   UpdataTimeAnimeSecondsRequest,
   UpdataTimeSerieSecondsRequest,
   UpdatedEpisodieIsWatchedRequest,
+  UpdatedMovieIsWatchedRequest,
+  UpdatedMovieTimeRequest,
 } from '../shared/types/ipc-types'
 import { appRoadmingPath, pathCategories } from '.'
 import fs from 'fs'
@@ -126,6 +128,22 @@ ipcMain.handle(
   IPC.movies.getById,
   async (_, { id }: GetMovieByIdRequest): Promise<GetMovieByIdResponse> => {
     const data = moviesRepository.getMovieById({ id })
+    return data
+  },
+)
+
+ipcMain.handle(
+  IPC.movies.updateTime,
+  async (_, { id, temp }: UpdatedMovieTimeRequest): Promise<void> => {
+    const data = moviesRepository.updateTime({ id, temp })
+    return data
+  },
+)
+
+ipcMain.handle(
+  IPC.movies.isWatched,
+  async (_, { id }: UpdatedMovieIsWatchedRequest): Promise<void> => {
+    const data = moviesRepository.updateIsWatched({ id })
     return data
   },
 )

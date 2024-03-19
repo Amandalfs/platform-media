@@ -3,6 +3,8 @@ import {
   GetMovieByIdResponse,
   GetMoviesResponse,
   Movie,
+  UpdatedMovieIsWatchedRequest,
+  UpdatedMovieTimeRequest,
 } from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
@@ -54,6 +56,22 @@ class MoviesRepository {
     return {
       data: movie,
     }
+  }
+
+  async updateTime({ id, temp }: UpdatedMovieTimeRequest): Promise<void> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    store.set(`movies.${id}`, {
+      ...movie,
+      isTemp: temp,
+    })
+  }
+
+  async updateIsWatched({ id }: UpdatedMovieIsWatchedRequest): Promise<void> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    store.set(`movies.${id}`, {
+      ...movie,
+      isWatched: true,
+    })
   }
 }
 
