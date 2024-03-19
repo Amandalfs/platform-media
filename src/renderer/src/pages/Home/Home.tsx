@@ -47,7 +47,7 @@ export function Home(): JSX.Element {
                 key={index}
                 image=""
                 status="Continuar"
-                title="Teen Wolf"
+                title="Em breve"
               />
             ))}
           </div>
@@ -65,7 +65,7 @@ export function Home(): JSX.Element {
                 key={index}
                 image=""
                 status="Continuar"
-                title="Teen Wolf"
+                title="Em breve"
               />
             ))}
           </div>
@@ -82,7 +82,7 @@ export function Home(): JSX.Element {
                 key={index}
                 image=""
                 status="Continuar"
-                title="Teen Wolf"
+                title="Em breve"
               />
             ))}
           </div>
