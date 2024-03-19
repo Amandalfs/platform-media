@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.amandalfs.app
 productName: platform-playings-zony
 directories:
   buildResources: build
@@ -30,14 +30,13 @@ dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - AppImage
-    - snap
+    - AppImage  
     - deb
+    - rpm
+    - pacman
+    - freebsd
   maintainer: electronjs.org
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
-npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
+npmRebuild: true

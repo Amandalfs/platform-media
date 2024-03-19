@@ -8,18 +8,28 @@ interface CardMediumProps {
   link?: string
 }
 
-export function CardMedium({ image, title, status, link }: CardMediumProps): JSX.Element {
+export function CardMedium({
+  image,
+  title,
+  status,
+  link,
+}: CardMediumProps): JSX.Element {
   return (
     <Flex
       style={{
         backgroundImage: `url(${image})`,
         borderRadius: '12px',
         width: 200,
-        height: 250
+        height: 250,
       }}
       className="border-black-500 border-2 flex-col"
     >
-      <Flex direction={'column'} align={'center'} justify={'between'} className="h-full p-4">
+      <Flex
+        direction={'column'}
+        align={'center'}
+        justify={'between'}
+        className="h-full p-4"
+      >
         <h1 className="text-slate-100 text-lg">{title}</h1>
         <Link to={link ?? '/'}>
           <Button variant="solid" style={{ width: 160 }}>

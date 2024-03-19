@@ -1,11 +1,11 @@
 import { Menu, Tray } from 'electron'
 import net from 'net'
 import os from 'os'
-let server: net.Server | null
-let tray: Tray | null
 import icon from '../../resources/icon.png?asset'
 
 import * as http from 'http'
+let server: net.Server | null
+let tray: Tray | null
 
 const corsMiddleware = (req, res, next): void => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -21,12 +21,15 @@ const corsMiddleware = (req, res, next): void => {
   next()
 }
 
-const handleRequest = (req: http.IncomingMessage, res: http.ServerResponse): void => {
+const handleRequest = (
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): void => {
   if (req.method === 'GET') {
     res.setHeader('Content-Type', 'application/json')
 
     const response = {
-      message: 'Olá, este é um exemplo de API HTTP com Node.js e TypeScript!'
+      message: 'Olá, este é um exemplo de API HTTP com Node.js e TypeScript!',
     }
 
     res.end(JSON.stringify(response))
@@ -102,33 +105,33 @@ export function createTray(): void {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Iniciar Servidor',
-      click: createServer
+      click: createServer,
     },
     {
       label: 'Parar Servidor',
-      click: stopServer
+      click: stopServer,
     },
     {
       label: 'Iniciar Servidor Http',
-      click: createHttpServer
+      click: createHttpServer,
     },
     {
       label: 'Parar Servidor Http',
-      click: stopHttpServer
+      click: stopHttpServer,
     },
     {
       label: 'Info',
       submenu: [
         {
           label: `IP: ${getLocalIPAddress()}`,
-          enabled: false
+          enabled: false,
         },
         {
           label: `Porta: 3000`,
-          enabled: false
-        }
-      ]
-    }
+          enabled: false,
+        },
+      ],
+    },
   ])
 
   tray.setToolTip('Servidor TCP')

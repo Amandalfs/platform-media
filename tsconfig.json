@@ -31,8 +31,9 @@
     "src",
     "resources",
     "src/preload/types.d.ts",
-    "electron.vite.config.*"
-, "src/main/repositories/.ts"  ],
+    "electron.vite.config.*",
+    "src/main/repositories/.ts"  
+  ],
   "exclude": [
     "node_modules"
   ],

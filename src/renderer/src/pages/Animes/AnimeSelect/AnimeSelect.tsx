@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import * as Collapsible from '@radix-ui/react-collapsible'
-import image from '../../../assets/teenwolf.jpg'
 import { useQuery } from '@tanstack/react-query'
 import { GetAnimeByIdResponse } from '~/src/shared/types/ipc-types'
 import LoadingSpinner from '../../../components/Loading/Loading'
@@ -11,8 +10,27 @@ type EpisodeProps = {
   watched: boolean
   watchedMinutes?: string
   animeId: string
-  id: string
   season: number
+}
+
+function formatTime(seconds: number): string {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  let formattedTime = ''
+
+  if (hours > 0) {
+    formattedTime += `${hours} hora${hours !== 1 ? 's' : ''} `
+  }
+
+  if (minutes > 0 || hours > 0) {
+    formattedTime += `${minutes} minuto${minutes !== 1 ? 's' : ''} `
+  }
+
+  formattedTime += `${remainingSeconds} segundo${remainingSeconds !== 1 ? 's' : ''}`
+
+  return formattedTime
 }
 
 const Episode = ({
@@ -20,20 +38,23 @@ const Episode = ({
   watched,
   watchedMinutes,
   animeId,
-  id,
-  season
+  season,
 }: EpisodeProps): JSX.Element => (
   <Link to={`/animes/${animeId}/seasons/${season}/episodies/${number}`}>
     <SeparatorHorizontal />
     <div className="flex justify-start gap-4 h-8">
-      <img src={image} alt="" className="h-auto w-auto" />
-      <h2 className="ml-2">{number} Episódio</h2>
+      <div className="flex w-32">
+        <img src={''} alt="" className="h-auto w-auto" />
+        <h2 className="ml-2">{number} Episódio</h2>
+      </div>
       <SeparatorVertical />
-      {watchedMinutes ? (
-        <div className="ml-2">{watchedMinutes}</div>
-      ) : (
-        <div className="ml-2">00:00</div>
-      )}
+      <div className="flex w-52">
+        {watchedMinutes ? (
+          <div className="ml-2">{formatTime(Number(watchedMinutes))}</div>
+        ) : (
+          <div className="ml-2">00:00</div>
+        )}
+      </div>
       <SeparatorVertical />
       <button
         className={`ml-2 w-6 h-6 flex items-center justify-center ${
@@ -60,7 +81,7 @@ const SeparatorHorizontal = (): JSX.Element => {
 }
 
 const Season = ({ number, children }: SeasonProps): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="mb-4">
@@ -75,7 +96,10 @@ const Season = ({ number, children }: SeasonProps): JSX.Element => {
           <h2 className="text-xl font-bold">Temporada {number}</h2>
         </div>
       </div>
-      <Collapsible.Root open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+      <Collapsible.Root
+        open={isOpen}
+        onOpenChange={() => setIsOpen((prev) => !prev)}
+      >
         <Collapsible.Content>{children}</Collapsible.Content>
       </Collapsible.Root>
     </div>
@@ -90,25 +114,25 @@ export function AnimeSelect(): JSX.Element {
     queryFn: async (): Promise<GetAnimeByIdResponse> => {
       const response = await window.api.getAnimeById({ id: id ?? '' })
       return response
-    }
+    },
   })
 
   return (
     <div className="p-4">
       <div className="flex flex-col items-center justify-center mb-4">
         <h1 className="text-3xl font-bold mb-2">
-          {data && `${data.data.name} - ${data.data.seasons.length} temporada`}
+          {data &&
+            `${data.data.name} - ${Object.values(data.data.seasons).length} temporada`}
         </h1>
         <img src={data?.data.banner} alt="" className="w-auto h-52 mb-4" />
       </div>
       <div className="w-[80%] mx-auto">
         {data &&
-          data.data.seasons.map((season) => (
+          Object.values(data.data.seasons).map((season) => (
             <Season key={season.id} number={season.number}>
-              {season.episodies.map((episodie) => (
+              {Object.values(season.episodies).map((episodie) => (
                 <Episode
                   animeId={id ?? ''}
-                  id={episodie.id}
                   number={episodie.number}
                   watched={episodie.isWatched}
                   watchedMinutes={String(episodie.isTemp)}

@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
 import { HandleCreateVideosRequest } from './../shared/types/ipc-types'
 import { IPC } from '../shared/constant/IPC'
 import {
@@ -14,7 +13,17 @@ import {
   GetMoviesRequest,
   GetMoviesResponse,
   GetAnimeEpisodieByNumberResponse,
-  GetAnimeEpisodieByNumberRequest
+  GetAnimeEpisodieByNumberRequest,
+  UpdataTimeAnimeSecondsRequest,
+  UpdataEpisodieIsWatchedRequest,
+  GetSerieEpisodieByNumberRequest,
+  GetSerieEpisodieByNumberResponse,
+  UpdatedEpisodieIsWatchedRequest,
+  UpdataTimeSerieSecondsRequest,
+  GetMovieByIdRequest,
+  GetMovieByIdResponse,
+  UpdatedMovieTimeRequest,
+  UpdatedMovieIsWatchedRequest,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -22,26 +31,59 @@ export const api = {
   createVideos(req: HandleCreateVideosRequest): Promise<void> {
     return ipcRenderer.invoke(IPC.createVideos, req)
   },
+
   getSeriesByPage(req: GetSeriesRequest): Promise<GetSeriesResponse> {
     return ipcRenderer.invoke(IPC.series.getByPage, req)
-  },
-  getAnimesByPage(req: GetAnimesRequest): Promise<GetAnimesResponse> {
-    return ipcRenderer.invoke(IPC.animes.getByPage, req)
-  },
-  getMoviesByPage(req: GetMoviesRequest): Promise<GetMoviesResponse> {
-    return ipcRenderer.invoke(IPC.movies.getByPage, req)
-  },
-  getAnimeById(req: GetAnimeByIdRequest): Promise<GetAnimeByIdResponse> {
-    return ipcRenderer.invoke(IPC.animes.getById, req)
   },
   getSerieById(req: GetSerieByIdRequest): Promise<GetSerieByIdResponse> {
     return ipcRenderer.invoke(IPC.series.getById, req)
   },
+  getSerieEpisodie(
+    req: GetSerieEpisodieByNumberRequest,
+  ): Promise<GetSerieEpisodieByNumberResponse> {
+    return ipcRenderer.invoke(IPC.series.getEpisodie, req)
+  },
+  serieUpdateTime(req: UpdataTimeSerieSecondsRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.series.updateTime, req)
+  },
+  serieUpdateEpisodieWatched(
+    req: UpdatedEpisodieIsWatchedRequest,
+  ): Promise<void> {
+    return ipcRenderer.invoke(IPC.series.watchedEpisodie, req)
+  },
+
+  getMoviesByPage(req: GetMoviesRequest): Promise<GetMoviesResponse> {
+    return ipcRenderer.invoke(IPC.movies.getByPage, req)
+  },
+  getMovieById(req: GetMovieByIdRequest): Promise<GetMovieByIdResponse> {
+    return ipcRenderer.invoke(IPC.movies.getById, req)
+  },
+  updateMovieTime(req: UpdatedMovieTimeRequest) {
+    return ipcRenderer.invoke(IPC.movies.updateTime, req)
+  },
+  updateMovieIsWatched(req: UpdatedMovieIsWatchedRequest) {
+    return ipcRenderer.invoke(IPC.movies.isWatched, req)
+  },
+
+  getAnimesByPage(req: GetAnimesRequest): Promise<GetAnimesResponse> {
+    return ipcRenderer.invoke(IPC.animes.getByPage, req)
+  },
+  getAnimeById(req: GetAnimeByIdRequest): Promise<GetAnimeByIdResponse> {
+    return ipcRenderer.invoke(IPC.animes.getById, req)
+  },
   getAnimeEpisodie(
-    req: GetAnimeEpisodieByNumberRequest
+    req: GetAnimeEpisodieByNumberRequest,
   ): Promise<GetAnimeEpisodieByNumberResponse> {
     return ipcRenderer.invoke(IPC.animes.getEpisodie, req)
-  }
+  },
+  animeUpdateTime(req: UpdataTimeAnimeSecondsRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.animes.updateTime, req)
+  },
+  animeUpdateEpisodieWatched(
+    req: UpdataEpisodieIsWatchedRequest,
+  ): Promise<void> {
+    return ipcRenderer.invoke(IPC.animes.watchedEpisodie, req)
+  },
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -49,14 +91,12 @@ export const api = {
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
     console.error(error)
   }
 } else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (define in dts)
   window.api = api
 }

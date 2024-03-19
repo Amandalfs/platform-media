@@ -32,12 +32,17 @@
     "radix-ui": "^1.0.1",
     "react-player": "^2.15.1",
     "react-router-dom": "^6.22.2",
-    "tailwindcss": "^3.4.1"
+    "screenfull": "^6.0.2",
+    "tailwindcss": "^3.4.1",
+    "vite-tsconfig-paths": "^4.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",
     "@electron-toolkit/eslint-config-ts": "^1.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
+    "@rocketseat/eslint-config": "^2.2.2",
     "@types/express": "^4.17.21",
     "@types/node": "^18.17.5",
     "@types/react": "^18.2.20",
@@ -49,8 +54,6 @@
     "eslint": "^8.47.0",
     "eslint-plugin-react": "^7.33.2",
     "prettier": "^3.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.9"
   }

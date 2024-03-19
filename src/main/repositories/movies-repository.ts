@@ -1,4 +1,11 @@
-import { GetMoviesResponse, Movie } from '~/src/shared/types/ipc-types'
+import {
+  GetMovieByIdRequest,
+  GetMovieByIdResponse,
+  GetMoviesResponse,
+  Movie,
+  UpdatedMovieIsWatchedRequest,
+  UpdatedMovieTimeRequest,
+} from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
 
@@ -8,7 +15,10 @@ interface CreateMovieInput {
 }
 
 class MoviesRepository {
-  async getPageOrganizator(size: number, page: number): Promise<GetMoviesResponse> {
+  async getPageOrganizator(
+    size: number,
+    page: number,
+  ): Promise<GetMoviesResponse> {
     const objects = store.get<string, Movie>('movies')
     const movies = Object.values(objects) as Array<Movie>
 
@@ -18,7 +28,7 @@ class MoviesRepository {
     return {
       data: movies.slice(startIndex, endIndex),
       isNext: endIndex < movies.length,
-      isPrev: startIndex > 0
+      isPrev: startIndex > 0,
     }
   }
 
@@ -33,10 +43,35 @@ class MoviesRepository {
       isTemp: 0,
       isWatched: false,
       reload_at: new Date(),
-      url: ''
+      url: `http://localhost:3333/videos/movies/${name}/movie/movie.mp4`,
     }
     store.set(`movies.${movieId}`, movie)
     return movie
+  }
+
+  async getMovieById({
+    id,
+  }: GetMovieByIdRequest): Promise<GetMovieByIdResponse> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    return {
+      data: movie,
+    }
+  }
+
+  async updateTime({ id, temp }: UpdatedMovieTimeRequest): Promise<void> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    store.set(`movies.${id}`, {
+      ...movie,
+      isTemp: temp,
+    })
+  }
+
+  async updateIsWatched({ id }: UpdatedMovieIsWatchedRequest): Promise<void> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    store.set(`movies.${id}`, {
+      ...movie,
+      isWatched: true,
+    })
   }
 }
 

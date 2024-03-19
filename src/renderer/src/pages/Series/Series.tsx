@@ -12,7 +12,7 @@ export function Series(): JSX.Element {
     queryFn: async (): Promise<GetSeriesResponse> => {
       const response = await window.api.getSeriesByPage({ page, sizeList: 5 })
       return response
-    }
+    },
   })
 
   return (
