@@ -1,4 +1,9 @@
-import { GetMoviesResponse, Movie } from '~/src/shared/types/ipc-types'
+import {
+  GetMovieByIdRequest,
+  GetMovieByIdResponse,
+  GetMoviesResponse,
+  Movie,
+} from '~/src/shared/types/ipc-types'
 import { store } from '../store'
 import { randomUUID } from 'crypto'
 
@@ -36,10 +41,19 @@ class MoviesRepository {
       isTemp: 0,
       isWatched: false,
       reload_at: new Date(),
-      url: '',
+      url: `http://localhost:3333/videos/movies/${name}/movie/movie.mp4`,
     }
     store.set(`movies.${movieId}`, movie)
     return movie
+  }
+
+  async getMovieById({
+    id,
+  }: GetMovieByIdRequest): Promise<GetMovieByIdResponse> {
+    const movie = store.get<string, Movie>(`movies.${id}`)
+    return {
+      data: movie,
+    }
   }
 }
 

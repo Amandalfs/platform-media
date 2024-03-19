@@ -79,6 +79,10 @@ export interface GetMoviesRequest {
   page: number
 }
 
+export interface GetMovieByIdRequest {
+  id: string
+}
+
 export interface GetAnimeByIdRequest {
   id: string
 }
@@ -163,4 +167,8 @@ export interface GetSerieEpisodieByNumberResponse {
   data: Episodie
   isNext: string
   isPrev: string
+}
+
+export interface GetMovieByIdResponse {
+  data: Movie
 }

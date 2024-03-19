@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
 import { HandleCreateVideosRequest } from './../shared/types/ipc-types'
 import { IPC } from '../shared/constant/IPC'
 import {
@@ -21,6 +20,8 @@ import {
   GetSerieEpisodieByNumberResponse,
   UpdatedEpisodieIsWatchedRequest,
   UpdataTimeSerieSecondsRequest,
+  GetMovieByIdRequest,
+  GetMovieByIdResponse,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -28,17 +29,9 @@ export const api = {
   createVideos(req: HandleCreateVideosRequest): Promise<void> {
     return ipcRenderer.invoke(IPC.createVideos, req)
   },
+
   getSeriesByPage(req: GetSeriesRequest): Promise<GetSeriesResponse> {
     return ipcRenderer.invoke(IPC.series.getByPage, req)
-  },
-  getAnimesByPage(req: GetAnimesRequest): Promise<GetAnimesResponse> {
-    return ipcRenderer.invoke(IPC.animes.getByPage, req)
-  },
-  getMoviesByPage(req: GetMoviesRequest): Promise<GetMoviesResponse> {
-    return ipcRenderer.invoke(IPC.movies.getByPage, req)
-  },
-  getAnimeById(req: GetAnimeByIdRequest): Promise<GetAnimeByIdResponse> {
-    return ipcRenderer.invoke(IPC.animes.getById, req)
   },
   getSerieById(req: GetSerieByIdRequest): Promise<GetSerieByIdResponse> {
     return ipcRenderer.invoke(IPC.series.getById, req)
@@ -55,6 +48,20 @@ export const api = {
     req: UpdatedEpisodieIsWatchedRequest,
   ): Promise<void> {
     return ipcRenderer.invoke(IPC.series.watchedEpisodie, req)
+  },
+
+  getMoviesByPage(req: GetMoviesRequest): Promise<GetMoviesResponse> {
+    return ipcRenderer.invoke(IPC.movies.getByPage, req)
+  },
+  getMovieById(req: GetMovieByIdRequest): Promise<GetMovieByIdResponse> {
+    return ipcRenderer.invoke(IPC.movies.getById, req)
+  },
+
+  getAnimesByPage(req: GetAnimesRequest): Promise<GetAnimesResponse> {
+    return ipcRenderer.invoke(IPC.animes.getByPage, req)
+  },
+  getAnimeById(req: GetAnimeByIdRequest): Promise<GetAnimeByIdResponse> {
+    return ipcRenderer.invoke(IPC.animes.getById, req)
   },
   getAnimeEpisodie(
     req: GetAnimeEpisodieByNumberRequest,
@@ -76,15 +83,11 @@ export const api = {
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
     console.error(error)
   }
 } else {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (define in dts)
   window.api = api

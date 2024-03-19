@@ -6,6 +6,9 @@ import {
   GetAnimeEpisodieByNumberResponse,
   GetAnimesRequest,
   GetAnimesResponse,
+  GetMovieByIdRequest,
+  GetMovieByIdResponse,
+  GetMoviesRequest,
   GetMoviesResponse,
   GetSerieByIdRequest,
   GetSerieByIdResponse,
@@ -112,9 +115,17 @@ ipcMain.handle(
   IPC.movies.getByPage,
   async (
     _,
-    { page, sizeList }: GetAnimesRequest,
+    { page, sizeList }: GetMoviesRequest,
   ): Promise<GetMoviesResponse> => {
     const data = moviesRepository.getPageOrganizator(sizeList, page)
+    return data
+  },
+)
+
+ipcMain.handle(
+  IPC.movies.getById,
+  async (_, { id }: GetMovieByIdRequest): Promise<GetMovieByIdResponse> => {
+    const data = moviesRepository.getMovieById({ id })
     return data
   },
 )

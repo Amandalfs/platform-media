@@ -9,6 +9,7 @@ import { SerieEpisodie } from './pages/Series/SerieSelect/SerieEpisodie/SerieEpi
 import { AnimeSelect } from './pages/Animes/AnimeSelect/AnimeSelect'
 import { AnimeEpisodie } from './pages/Animes/AnimeSelect/AnimeEpisodie/AnimeEpisodie'
 import { Register } from './pages/Register/Register'
+import { MovieSelected } from './pages/Movies/MovieSelect/MovieSelect'
 
 export function Routes(): JSX.Element {
   return (
@@ -19,7 +20,7 @@ export function Routes(): JSX.Element {
           <Route path="/register" element={<Register />} />
 
           <Route path="/movies" element={<Movies />} />
-          <Route path="/movies/:id" element={<></>} />
+          <Route path="/movies/:id" element={<MovieSelected />} />
 
           <Route path="/animes" element={<Animes />} />
           <Route path="/animes/:id" element={<AnimeSelect />} />
