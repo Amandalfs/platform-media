@@ -153,3 +153,5 @@ function createSQLiteFileIfNotExists(): void {
   }
 }
 createSQLiteFileIfNotExists()
+
+export const versionPackage = app.getVersion()

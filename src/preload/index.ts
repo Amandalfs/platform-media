@@ -24,6 +24,7 @@ import {
   GetMovieByIdResponse,
   UpdatedMovieTimeRequest,
   UpdatedMovieIsWatchedRequest,
+  IsUpdatedAppReponse,
 } from '~/src/shared/types/ipc-types'
 
 // Custom APIs for renderer
@@ -83,6 +84,10 @@ export const api = {
     req: UpdataEpisodieIsWatchedRequest,
   ): Promise<void> {
     return ipcRenderer.invoke(IPC.animes.watchedEpisodie, req)
+  },
+
+  isAppUpdated(): Promise<IsUpdatedAppReponse> {
+    return ipcRenderer.invoke(IPC.app.isUpdated)
   },
 }
 

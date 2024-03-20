@@ -180,3 +180,9 @@ export interface GetSerieEpisodieByNumberResponse {
 export interface GetMovieByIdResponse {
   data: Movie
 }
+
+export interface IsUpdatedAppReponse {
+  isUpdate: boolean
+  link?: string
+  version?: string
+}

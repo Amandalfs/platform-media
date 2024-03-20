@@ -23,4 +23,7 @@ export const IPC = {
     updateTime: 'movie-update-time',
     isWatched: 'movie-is-watched',
   },
+  app: {
+    isUpdated: 'app-is-updated',
+  },
 }

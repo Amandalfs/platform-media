@@ -17,6 +17,7 @@ import {
   GetSeriesRequest,
   GetSeriesResponse,
   HandleCreateVideosRequest,
+  IsUpdatedAppReponse,
   UpdataEpisodieIsWatchedRequest,
   UpdataTimeAnimeSecondsRequest,
   UpdataTimeSerieSecondsRequest,
@@ -24,7 +25,7 @@ import {
   UpdatedMovieIsWatchedRequest,
   UpdatedMovieTimeRequest,
 } from '../shared/types/ipc-types'
-import { appRoadmingPath, pathCategories } from '.'
+import { appRoadmingPath, pathCategories, versionPackage } from '.'
 import fs from 'fs'
 import path from 'path'
 import { seriesRepository } from './repositories/series-repository'
@@ -243,3 +244,24 @@ ipcMain.handle(
     })
   },
 )
+
+ipcMain.handle(IPC.app.isUpdated, async (): Promise<IsUpdatedAppReponse> => {
+  const owner = 'amandalfs'
+  const repo = 'platform-media'
+  const url = `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+
+  const response = await fetch(url)
+  const data = await response.json()
+  const latestVersion = data.tag_name
+
+  if (latestVersion !== versionPackage) {
+    return {
+      isUpdate: true,
+      link: 'https://github.com/Amandalfs/platform-media/releases',
+      version: latestVersion,
+    }
+  }
+  return {
+    isUpdate: false,
+  }
+})
